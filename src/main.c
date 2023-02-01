@@ -1,8 +1,8 @@
 #include <main.h>
 
 memBlock* fillmemBlock(char* input, int length,memBlock* current){
-    if(!current->isFull && current->blockIndex+length<=BLOCKSIZE){
-        memmove(current->block+current->blockIndex,input,length);
+    if(!current->isFull && current->blockIndex+length <= BLOCKSIZE){
+        memmove(current->block+current->blockIndex, input, length);
         current->blockIndex+=length;
         if(current->blockIndex>=BLOCKSIZE){
             current->isFull = true;
@@ -11,7 +11,7 @@ memBlock* fillmemBlock(char* input, int length,memBlock* current){
         memBlock* new = (memBlock*)malloc(sizeof(memBlock));
         new->next = current;
         current = new;
-        memmove(current->block,input,length);
+        memmove(current->block, input, length);
         current->blockIndex+=length;
     }
     return current;
@@ -19,7 +19,7 @@ memBlock* fillmemBlock(char* input, int length,memBlock* current){
 
 int main()
 {
-    printf("Hello World\n");
+    printf("\tStart Of Program \t\n");
 
     memBlock* head = (memBlock*)malloc(sizeof(memBlock));
 
@@ -29,14 +29,14 @@ int main()
 
     char* test = "tt00000015.61645.000";
 
-    for(int i = 0; i<11;i++){
-        head = fillmemBlock(test,20,head);
+    for(int i = 0; i<11; i++){
+        head = fillmemBlock(test, 20, head);
     }
 
     memBlock* current = head;
     while (current)
     {
-        printf("%s\n",current->block);
+        printf("%s\n", current->block);
         current = current->next;
     }
     
