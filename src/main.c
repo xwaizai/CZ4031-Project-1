@@ -1,10 +1,10 @@
 #include <main.h>
 
 memBlock* fillmemBlock(char* input, int length,memBlock* current){
-    if(!current->isFull){
+    if(!current->isFull && current->blockIndex+length<=BLOCKSIZE){
         memmove(current->block+current->blockIndex,input,length);
         current->blockIndex+=length;
-        if(current->blockIndex>=200){
+        if(current->blockIndex>=BLOCKSIZE){
             current->isFull = true;
         }
     }else{
