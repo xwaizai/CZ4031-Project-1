@@ -1,3 +1,1 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\executable.dir/objects.a
-C:\MinGW\bin\ar.exe qc CMakeFiles\executable.dir/objects.a @CMakeFiles\executable.dir\objects1
-C:\MinGW\bin\gcc.exe -g -Wl,--whole-archive CMakeFiles\executable.dir/objects.a -Wl,--no-whole-archive -o executable.exe -Wl,--out-implib,libexecutable.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\executable.dir\linkLibs.rsp
+/usr/bin/cc   -g  -rdynamic CMakeFiles/executable.dir/src/main.c.o  -o executable 
