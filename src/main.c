@@ -1,12 +1,14 @@
 #include <main.h>
 
 memBlock* fillmemBlock(char* input, int length,memBlock* current){
+    /*Case 1 when memory block is not full and input length is within the BLOCKSIZE*/
     if(!current->isFull && current->blockIndex+length <= BLOCKSIZE){
         memmove(current->block+current->blockIndex, input, length);
         current->blockIndex+=length;
         if(current->blockIndex>=BLOCKSIZE){
             current->isFull = true;
         }
+    /*Case 2 when memory block is full or input length exceeds the BLOCKSIZE*/
     }else{
         memBlock* new = (memBlock*)malloc(sizeof(memBlock));
         new->next = current;
@@ -28,7 +30,7 @@ memBlock* readFromFile(memBlock* current){
     int tokenlen;
     
     char tobeinserted[20];
-    memset(tobeinserted, 48, sizeof(tobeinserted));
+    memset(tobeinserted, 0, sizeof(tobeinserted));
 
     int index = 0;
     int initial = 0;
@@ -60,16 +62,12 @@ memBlock* readFromFile(memBlock* current){
             }
             /*setting header for number of digits of numVotes*/
             tobeinserted[12]=tokenlen;
-
-            /*
-            for(int i = 0;i<sizeof(tobeinserted);i++)
-                printf("%c",tobeinserted[i]);
-            printf("\n");
-            printf("%d\n",tobeinserted[12]);*/
             
+            /*Insert to memory block*/
             current = fillmemBlock(tobeinserted, sizeof(tobeinserted),current);
 
-            memset(tobeinserted, 48, sizeof(tobeinserted));
+            /*reset the tobeinserted array*/
+            memset(tobeinserted, 0, sizeof(tobeinserted));
 
             index = 0;
         }
@@ -77,6 +75,14 @@ memBlock* readFromFile(memBlock* current){
     }
     fclose(fp);
     return current;
+}
+
+/*Solely for debuging purposes*/
+void printRecord(char * record){
+    for(int i = 0 ; i < 20; i++){
+        printf("%c",*(record+i));
+    }
+    printf("\n");
 }
 
 int main()
@@ -91,14 +97,6 @@ int main()
 
     head = readFromFile(head);
 
-    
-    /*
-    char* test = "tt00000015.61645.000";
-
-    for(int i = 0; i<11; i++){
-        head = fillmemBlock(test, 20, head);
-    }
-*/
     int blocks = 0;
     int j=0;
     int numRec = 0;
@@ -125,7 +123,36 @@ int main()
     printf("Number of records stored in a block: %d\n",BLOCKSIZE/20);
     printf("Number of blocks: %d\n",blocks);
 
-    printf("%d\n",sizeof(unsigned int));
+    printf("size of unsigned int %d\n",sizeof(unsigned int));
+
+    unsigned int noOfRec = 10*(blocks-1)+numRec;
+
+    unsigned int numVotes[noOfRec];
+
+    unsigned int blockaddrIndex = 0;
+    char **blockaddr = (char**)malloc(noOfRec*sizeof(char**));
+
+    current = head;
+    unsigned int numDigits = 0;
+    unsigned int numVote = 0;
+
+    while (current)
+    {
+        for(int i =0 ; i < 200 ;i+=20){
+            if(current->block[i]=='t'){
+                numVote = atoi(&(current->block[13+i]));
+                printf("numVote: %d\n",numVote);
+                numVotes[blockaddrIndex]=numVote;
+                blockaddr[blockaddrIndex]=&(current->block[i]);
+
+                printf("%d,%c\n",numVotes[blockaddrIndex],*(blockaddr[blockaddrIndex]));
+                printRecord((blockaddr[blockaddrIndex]));
+                blockaddrIndex++;
+            }
+            
+        }
+        current = current->next;
+    }
     
     return 0;
 }
