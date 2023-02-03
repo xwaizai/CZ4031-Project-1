@@ -99,16 +99,33 @@ int main()
         head = fillmemBlock(test, 20, head);
     }
 */
+    int blocks = 0;
+    int j=0;
+    int numRec = 0;
     memBlock* current = head;
     while (current)
     {
-        
-        for(int i =0 ; i < 200 ;i++){
+        blocks++;
+        /*for(int i =0 ; i < 200 ;i++){
             printf("%c", current->block[i]);
         }
-        printf("\n");
+        printf("\n");*/
         current = current->next;
     }
+    while(j<200){
+        if(head->block[j]=='t'){
+            numRec++;
+        }
+        j+=20;
+    }
+
+    printf("Experiment 1\n");
+    printf("Number of records: %d\n",10*(blocks-1)+numRec);
+    printf("Size of records: 20\n");
+    printf("Number of records stored in a block: %d\n",BLOCKSIZE/20);
+    printf("Number of blocks: %d\n",blocks);
+
+    printf("%d\n",sizeof(unsigned int));
     
     return 0;
 }
