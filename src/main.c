@@ -62,7 +62,7 @@ memBlock* readFromFile(memBlock* current){
                 for(int i = 20;i>11;i--){
                     tobeinserted[i]=tobeinserted[i-1];
                 }
-                /*setting header for number of digits of numVotes*/
+                /*adding 0 if it is not 10.0 eg. 5.5 becomes 5.50*/
                 tobeinserted[12]='0';
             }
             
@@ -188,17 +188,22 @@ int main()
 
     printf("size of unsigned int %d\n",sizeof(unsigned int));
 
+    /*store number of records*/
     unsigned int noOfRec = 10*(blocks-1)+numRec;
 
+    /*initialise numVotes (key) array*/
     unsigned int *numVotes = (int *) malloc(noOfRec*sizeof(int *));
 
     unsigned int blockaddrIndex = 0;
+
+    /*initialize blockaddr array*/
     char **blockaddr = (char**)malloc(noOfRec*sizeof(char**));
 
     current = head;
     unsigned int numDigits = 0;
     unsigned int numVote = 0;
 
+    /*looping through all the memBlocks to retrieve key and address of key for indexing*/
     while (current)
     {
         for(int i =0 ; i < 200 ;i+=20){
@@ -218,6 +223,7 @@ int main()
     }
     printf("%d\n",noOfRec);
 
+    /*using quicksort algo to sort the arrays*/
     quickSort(numVotes,blockaddr,0,noOfRec-1);
 
     for(int i = 0;i<1000;i++){
