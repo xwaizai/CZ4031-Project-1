@@ -59,12 +59,12 @@ int main() {
     unsigned int noOfRec = 10 * (blocks - 1) + numRec;
 
     /*initialise numVotes (key) array*/
-    unsigned int* numVotes = (int*)malloc(noOfRec * sizeof(int*));
+    unsigned int* numVotes = (int*)malloc(noOfRec * sizeof(int));
 
     unsigned int blockaddrIndex = 0;
 
     /*initialize blockaddr array*/
-    char** blockaddr = (char**)malloc(noOfRec * sizeof(char**));
+    char** blockaddr = (char**)malloc(noOfRec * sizeof(char*));
 
     current = head;
     unsigned int numDigits = 0;
@@ -92,7 +92,7 @@ int main() {
 
     /*using quicksort algo to sort the arrays*/
     printf("Sorting array...\n");
-    quickSort(numVotes, blockaddr, 0, noOfRec - 1);
+    //quickSort(numVotes, blockaddr, 0, noOfRec - 1);
 
     for (int i = 0; i < 1000; i++) {
         printf("%d ", numVotes[i]);
@@ -100,7 +100,10 @@ int main() {
     }
 
     printf("Experiment 2\n");
-    buildbpt();
+    //buildbpt();
+
+    node* test = (node*) malloc(sizeof(node));
+    printf("%d\n",sizeof(test));
 
     return 0;
 }

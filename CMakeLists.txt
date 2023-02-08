@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20.0)
+cmake_minimum_required(VERSION 3.0.0)
 set(PROJECT_NAME SUPERDB)
 set(MAIN src/main.c)
 project(${PROJECT_NAME})
