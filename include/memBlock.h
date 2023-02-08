@@ -15,7 +15,6 @@ typedef struct memBlock {
     bool isFull;
     unsigned int blockIndex;
     struct memBlock* next;
-
 } memBlock;
 
 memBlock* fillmemBlock(char* input, int length, memBlock* current);

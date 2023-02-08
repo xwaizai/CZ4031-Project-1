@@ -16,6 +16,7 @@ typedef struct node {
     int size;
 } node;
 
-void buildbpt(void);
+int buildbpt(unsigned int* numVotesArr, char** blkAddArr);
+void insertbpt(int key, char* record, node* root);
 
 #endif
