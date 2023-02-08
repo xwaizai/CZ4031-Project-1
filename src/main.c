@@ -107,7 +107,7 @@ int main() {
     unsigned int* fakeNumVotes = (int*)malloc(5 * sizeof(int));
     char** fakeBlkAddr = (char**)malloc(5 * sizeof(char*));
 
-    for (int i = 0; i < sizeof(data); i++) {
+    for (int i = 0; i < sizeof(data)/data[0]; i++) {
         fakeNumVotes[i] = data[i];
         fakeBlkAddr[i] = dataC[i];
     }
