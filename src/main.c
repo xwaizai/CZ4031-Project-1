@@ -100,19 +100,20 @@ int main() {
     //     printRecord(blockaddr[i]);
     // }
 
-    unsigned int data[] = {5, 5, 6, 7, 8};
+    unsigned int data[] = {5, 5, 6, 7, 9, 8, 7};
     char* dataC[] = {"tt99166906.60", "tt99163168.40", "tt99165388.40",
-                     "tt99155207.00", "tt99155106.00"};
+                     "tt99155207.00", "tt99155106.00", "tt99155178.00",
+                     "tt99234117.00"};
 
-    unsigned int* fakeNumVotes = (int*)malloc(5 * sizeof(int));
-    char** fakeBlkAddr = (char**)malloc(5 * sizeof(char*));
-
-    for (int i = 0; i < sizeof(data)/data[0]; i++) {
+    int size = sizeof(data) / sizeof(unsigned int);
+    unsigned int* fakeNumVotes = (int*)malloc(size * sizeof(int));
+    char** fakeBlkAddr = (char**)malloc(size * sizeof(char*));
+    for (int i = 0; i < size; i++) {
         fakeNumVotes[i] = data[i];
         fakeBlkAddr[i] = dataC[i];
     }
 
-    printf("Experiment 2\n");
+    printf("---Experiment 2---\n");
     buildbpt(fakeNumVotes, fakeBlkAddr);
 
     return 0;
