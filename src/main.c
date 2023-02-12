@@ -100,26 +100,19 @@ int main() {
     //     printRecord(blockaddr[i]);
     // }
 
-    unsigned int data[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-    char* dataC[] = {"tt99166906.60", "tt99163168.40", "tt99165388.40",
-                     "tt99155207.00", "tt99155106.00", "tt99155178.00",
-                     "tt99234117.00", "tt99234127.00", "tt99234137.00",
-                     "tt99234147.00"};
-
-    // int size = sizeof(data) / sizeof(unsigned int);
-    // unsigned int* fakeNumVotes = (int*)malloc(size * sizeof(int));
-    // char** fakeBlkAddr = (char**)malloc(size * sizeof(char*));
-    // for (int i = 0; i < size; i++) {
-    //     fakeNumVotes[i] = data[i];
-    //     fakeBlkAddr[i] = dataC[i];
-    // }
+    unsigned int data[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    char* dataC[] = {
+        "tt99166906.60", "tt99163168.40", "tt99165388.40",
+        "tt99155207.00", "tt99155106.00", "tt99155178.00",
+        "tt99234117.00", "tt99234127.00", "tt99234137.00",
+    };
 
     int size = sizeof(data) / sizeof(unsigned int);
 
     printf("---Experiment 2---\n");
-    node* root = bulkloadbpt(data, dataC, size, NULL,10);
+    node* root = bulkloadbpt(data, dataC, size, NULL);
 
-    //printf("%d %d\n", root->keys[0], root->keys[1]);
+    // printf("%d %d\n", root->keys[0], root->keys[1]);
 
     printbpt(root);
 

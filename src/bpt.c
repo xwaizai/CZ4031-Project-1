@@ -12,7 +12,10 @@ void printRecordHere(char* record) {
     // printf("\n");
 }
 
-void populateLeaf(unsigned int* numVotesArr, char** blkAddArr, node* leaf,int noKeys) {
+void populateLeaf(unsigned int* numVotesArr,
+                  char** blkAddArr,
+                  node* leaf,
+                  int noKeys) {
     for (int i = 0; i < noKeys; i++) {
         leaf->keys[i] = *(numVotesArr + i);
         leaf->pointers[i] = *(blkAddArr + i);
@@ -72,7 +75,7 @@ node* updateParent(node* parent,
 node* bulkloadbpt(unsigned int* numVotesArr,
                   char** blkAddArr,
                   int numVotesLength,
-                  node* root,int totalnumVotes) {
+                  node* root) {
     node* headLeaf = (node*)malloc(sizeof(node));
     headLeaf->isLeaf = true;
     headLeaf->size = 0;
@@ -80,10 +83,21 @@ node* bulkloadbpt(unsigned int* numVotesArr,
     node* tailLeaf = headLeaf;
     node* prev = NULL;
 
+    int totalNumVotes = numVotesLength;
     int numLeaf = 0;
+    int mid = (KEYS / 2) + 1;
+    int keysToInsert = KEYS;
+    int i = 0;
 
-    for (int i = 0; i < numVotesLength; i += KEYS) {
+    while (i < numVotesLength) {
         numLeaf++;
+        printf("%d : %d \n", totalNumVotes, totalNumVotes % KEYS);
+
+        if ((totalNumVotes - 2 * KEYS) < mid && (totalNumVotes % KEYS) != 0)
+            keysToInsert = mid;
+        else
+            keysToInsert = KEYS;
+
         if (numLeaf > 1) {
             prev = tailLeaf;
             tailLeaf = (node*)malloc(sizeof(node));
@@ -91,25 +105,27 @@ node* bulkloadbpt(unsigned int* numVotesArr,
             tailLeaf->size = 0;
             tailLeaf->parent = NULL;
 
-            prev->pointers[KEYS] = tailLeaf;
-            totalnumVotes-=KEYS;
-            if(totalnumVotes-KEYS>0){
-                populateLeaf(&numVotesArr[i], &blkAddArr[i], tailLeaf,KEYS); 
-            }
-            else{
-                populateLeaf(&numVotesArr[i], &blkAddArr[i], tailLeaf,totalnumVotes);
-            }
-                
+            prev->pointers[keysToInsert] = tailLeaf;
 
-            // updateParent;
+            totalNumVotes -= keysToInsert;
+
+            if (totalNumVotes - keysToInsert > 0) {
+                populateLeaf(&numVotesArr[i], &blkAddArr[i], tailLeaf,
+                             keysToInsert);
+            } else {
+                populateLeaf(&numVotesArr[i], &blkAddArr[i], tailLeaf,
+                             totalNumVotes);
+            }
+
+            // updateParent
             root =
                 updateParent(prev->parent, prev, tailLeaf, tailLeaf->keys[0]);
             prev->parent = root;
             tailLeaf->parent = root;
-
         } else {
-            populateLeaf(&numVotesArr[i], &blkAddArr[i], tailLeaf,KEYS);
+            populateLeaf(&numVotesArr[i], &blkAddArr[i], tailLeaf, KEYS);
         }
+        i += keysToInsert;
     }
     while (root->parent != NULL) {
         root = root->parent;
@@ -135,9 +151,9 @@ void printbpt(node* root) {
             ptr = (node*)queuePop();
             for (int i = 0; i < ptr->size; i++) {
                 printf("%d ", ptr->keys[i]);
-                if (ptr->isLeaf) {
-                    printRecordHere((char*)ptr->pointers[i]);
-                }
+                // if (ptr->isLeaf) {
+                //     printRecordHere((char*)ptr->pointers[i]);
+                // }
                 if (!ptr->isLeaf) {
                     queueInsert(ptr->pointers[i]);
                     if (i + 1 == ptr->size) {
