@@ -6,8 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define KEYS 3  // 39
-#define PTR 4   // 40
+#define KEYS 16  // 16
+#define PTR 17   // 17
 
 typedef struct node {
     unsigned int keys[KEYS];
@@ -22,5 +22,6 @@ node* bulkloadbpt(unsigned int* numVotesArr,
                   int numVotesLength,
                   node* root);
 void printbpt(node* root);
+void saveToFile(node* root);
 
 #endif

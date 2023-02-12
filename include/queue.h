@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX 99
+#define MAX 999999
 
 bool queueIsEmpty();
 bool queueIsFull();

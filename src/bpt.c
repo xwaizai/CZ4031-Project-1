@@ -23,12 +23,28 @@ void populateLeaf(unsigned int* numVotesArr,
     }
 }
 
+void updateParentKeys(node* parent) {
+    node* finder = NULL;
+    for (int i = 0; i < parent->size; i++) {
+        finder = parent->pointers[i + 1];
+        while (!finder->isLeaf) {
+            finder = finder->pointers[0];
+        }
+        parent->keys[i] = finder->keys[0];
+    }
+}
+
 void splitParent(node* parent1, node* parent2) {
     int mid = parent1->size / 2;
+
+    if (parent1->size % 2 == 1)
+        mid = (parent1->size / 2) + 1;
+
     int j = 0;
     for (int i = mid; i < KEYS; i++) {
         parent2->keys[j] = parent1->keys[i];
         parent2->pointers[j] = parent1->pointers[i + 1];
+        parent1->pointers[i + 1] = NULL;
         j++;
         parent2->size++;
         parent1->size--;
@@ -64,12 +80,16 @@ node* updateParent(node* parent,
         coparent->parent = NULL;
         coparent->size = 0;
         splitParent(parent, coparent);
+        coparent->pointers[coparent->size] = childRight;
+        updateParentKeys(coparent);
         node* grandparent =
             updateParent(parent->parent, parent, coparent, coparent->keys[0]);
         parent->parent = grandparent;
         coparent->parent = grandparent;
+
         return coparent;
     }
+    return ((void*)0);
 }
 
 node* bulkloadbpt(unsigned int* numVotesArr,
@@ -90,8 +110,9 @@ node* bulkloadbpt(unsigned int* numVotesArr,
     int i = 0;
 
     while (i < numVotesLength) {
+        // printf("%d\n", i);
         numLeaf++;
-        printf("%d : %d \n", totalNumVotes, totalNumVotes % KEYS);
+        // printf("%d : %d \n", totalNumVotes, totalNumVotes % KEYS);
 
         if ((totalNumVotes - 2 * KEYS) < mid && (totalNumVotes % KEYS) != 0)
             keysToInsert = mid;
@@ -150,19 +171,63 @@ void printbpt(node* root) {
         for (int s = 0; s < nodeOnThisLvl; s++) {
             ptr = (node*)queuePop();
             for (int i = 0; i < ptr->size; i++) {
+                // printf("hi\n");
                 printf("%d ", ptr->keys[i]);
                 // if (ptr->isLeaf) {
                 //     printRecordHere((char*)ptr->pointers[i]);
                 // }
                 if (!ptr->isLeaf) {
                     queueInsert(ptr->pointers[i]);
-                    if (i + 1 == ptr->size) {
+                    if (i + 1 == ptr->size && ptr->pointers[i + 1] != NULL)
                         queueInsert(ptr->pointers[i + 1]);
-                    }
                 }
             }
             printf("| ");
         }
         printf("\n");
     }
+}
+
+void saveToFile(node* root) {
+    int num;
+    FILE* fptr;
+
+    // use appropriate location if you are using MacOS or Linux
+    fptr = fopen("out.txt", "w");
+
+    if (fptr == NULL) {
+        printf("Error!");
+        exit(1);
+    }
+
+    node* ptr = root;
+    for (int i = 0; i < ptr->size; i++) {
+        fprintf(fptr, "%d ", ptr->keys[i]);
+        if (i == 0)
+            queueInsert(ptr->pointers[i]);
+        queueInsert(ptr->pointers[i + 1]);
+    }
+    fprintf(fptr, "|\n\n");
+    while (!queueIsEmpty()) {
+        int nodeOnThisLvl = queueSize();
+        for (int s = 0; s < nodeOnThisLvl; s++) {
+            ptr = (node*)queuePop();
+            for (int i = 0; i < ptr->size; i++) {
+                // printf("hi\n");
+                fprintf(fptr, "%d ", ptr->keys[i]);
+                // if (ptr->isLeaf) {
+                //     printRecordHere((char*)ptr->pointers[i]);
+                // }
+                if (!ptr->isLeaf) {
+                    queueInsert(ptr->pointers[i]);
+                    if (i + 1 == ptr->size && ptr->pointers[i + 1] != NULL)
+                        queueInsert(ptr->pointers[i + 1]);
+                }
+            }
+            fprintf(fptr, "| ");
+        }
+        fprintf(fptr, "\n\n");
+    }
+
+    fclose(fptr);
 }
