@@ -17,8 +17,10 @@ typedef struct node {
     struct node* parent;
 } node;
 
-int buildbpt(unsigned int* numVotesArr, char** blkAddArr);
-node* searchbpt(node* root, int key);
-void insertbpt(int key, char* record, node* root);
+node* bulkloadbpt(unsigned int* numVotesArr,
+                  char** blkAddArr,
+                  int numVotesLength,
+                  node* root);
+void printbpt(node* root);
 
 #endif
