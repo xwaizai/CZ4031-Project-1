@@ -117,7 +117,7 @@ int main() {
     int size = sizeof(data) / sizeof(unsigned int);
 
     printf("---Experiment 2---\n");
-    node* root = bulkloadbpt(data, dataC, size, NULL);
+    node* root = bulkloadbpt(data, dataC, size, NULL,10);
 
     printf("%d %d\n", root->keys[0], root->keys[1]);
 

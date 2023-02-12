@@ -20,7 +20,7 @@ typedef struct node {
 node* bulkloadbpt(unsigned int* numVotesArr,
                   char** blkAddArr,
                   int numVotesLength,
-                  node* root);
+                  node* root,int totalnumVotes);
 void printbpt(node* root);
 
 #endif

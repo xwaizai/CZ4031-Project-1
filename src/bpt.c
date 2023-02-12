@@ -12,8 +12,8 @@ void printRecordHere(char* record) {
     // printf("\n");
 }
 
-void populateLeaf(unsigned int* numVotesArr, char** blkAddArr, node* leaf) {
-    for (int i = 0; i < KEYS; i++) {
+void populateLeaf(unsigned int* numVotesArr, char** blkAddArr, node* leaf,int noKeys) {
+    for (int i = 0; i < noKeys; i++) {
         leaf->keys[i] = *(numVotesArr + i);
         leaf->pointers[i] = *(blkAddArr + i);
         leaf->size++;
@@ -72,7 +72,7 @@ node* updateParent(node* parent,
 node* bulkloadbpt(unsigned int* numVotesArr,
                   char** blkAddArr,
                   int numVotesLength,
-                  node* root) {
+                  node* root,int totalnumVotes) {
     node* headLeaf = (node*)malloc(sizeof(node));
     headLeaf->isLeaf = true;
     headLeaf->size = 0;
@@ -93,7 +93,14 @@ node* bulkloadbpt(unsigned int* numVotesArr,
 
             prev->pointers[KEYS] = tailLeaf;
 
-            populateLeaf(&numVotesArr[i], &blkAddArr[i], tailLeaf);
+            if(totalnumVotes-KEYS>0){
+                populateLeaf(&numVotesArr[i], &blkAddArr[i], tailLeaf,KEYS);
+                totalnumVotes-=KEYS;
+            }
+            else{
+                populateLeaf(&numVotesArr[i], &blkAddArr[i], tailLeaf,totalnumVotes);
+            }
+                
 
             // updateParent;
             root =
@@ -102,7 +109,7 @@ node* bulkloadbpt(unsigned int* numVotesArr,
             tailLeaf->parent = root;
 
         } else {
-            populateLeaf(&numVotesArr[i], &blkAddArr[i], tailLeaf);
+            populateLeaf(&numVotesArr[i], &blkAddArr[i], tailLeaf,KEYS);
         }
     }
     while (root->parent != NULL) {
