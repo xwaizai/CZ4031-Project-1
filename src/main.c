@@ -119,7 +119,7 @@ int main() {
     printf("---Experiment 2---\n");
     node* root = bulkloadbpt(data, dataC, size, NULL,10);
 
-    printf("%d %d\n", root->keys[0], root->keys[1]);
+    //printf("%d %d\n", root->keys[0], root->keys[1]);
 
     printbpt(root);
 

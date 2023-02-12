@@ -92,10 +92,9 @@ node* bulkloadbpt(unsigned int* numVotesArr,
             tailLeaf->parent = NULL;
 
             prev->pointers[KEYS] = tailLeaf;
-
+            totalnumVotes-=KEYS;
             if(totalnumVotes-KEYS>0){
-                populateLeaf(&numVotesArr[i], &blkAddArr[i], tailLeaf,KEYS);
-                totalnumVotes-=KEYS;
+                populateLeaf(&numVotesArr[i], &blkAddArr[i], tailLeaf,KEYS); 
             }
             else{
                 populateLeaf(&numVotesArr[i], &blkAddArr[i], tailLeaf,totalnumVotes);
