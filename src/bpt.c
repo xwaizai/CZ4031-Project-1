@@ -1,6 +1,7 @@
 #include "bpt.h"
 #include <math.h>
 #include "queue.h"
+#include "group.h"
 
 void printRecordHere(char* record) {
     for (int i = 0; i < 14; i++) {
@@ -13,7 +14,7 @@ void printRecordHere(char* record) {
 }
 
 void populateLeaf(unsigned int* numVotesArr,
-                  char** blkAddArr,
+                  group** blkAddArr,
                   node* leaf,
                   int noKeys) {
     for (int i = 0; i < noKeys; i++) {
@@ -93,7 +94,7 @@ node* updateParent(node* parent,
 }
 
 node* bulkloadbpt(unsigned int* numVotesArr,
-                  char** blkAddArr,
+                  group** blkAddArr,
                   int numVotesLength,
                   node* root) {
     node* headLeaf = (node*)malloc(sizeof(node));

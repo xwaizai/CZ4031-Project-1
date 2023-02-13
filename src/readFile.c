@@ -17,7 +17,7 @@ memBlock* readFromFile(memBlock* current) {
     int initial = 0;
 
     /* opening file for reading */
-    fp = fopen("data.tsv", "r");
+    fp = fopen("data_test.tsv", "r");
     if (fp == NULL) {
         perror("Error opening file");
         return current;

@@ -6,6 +6,7 @@
 #include "memBlock.h"
 #include "readFile.h"
 #include "sorting.h"
+#include "group.h"
 
 /*Solely for debuging purposes*/
 void printRecord(char* record) {
@@ -15,6 +16,16 @@ void printRecord(char* record) {
             printf(" ");
     }
     printf("\n");
+}
+
+void printGroup(group* cur){
+    do{
+        for (int i=0; i<cur->size; i++){
+            printf("%d :",i);
+            printRecord(cur->pointers[i]);
+        }
+        cur=cur->next;
+    }while(cur);
 }
 
 int main() {
@@ -98,9 +109,25 @@ int main() {
     printf("Sorting array...\n");
     quickSort(numVotes, blockaddr, 0, noOfRec - 1);
 
-    // for (int i = 0; i < 1000; i++) {
-    //     printf("%d ", numVotes[i]);
-    //     printRecord(blockaddr[i]);
+    // for (int i = 0; i < noOfRec; i++) {
+    //     if (i<=46){
+    //         printf("%d ", numVotes[i]);
+    //         printRecord(blockaddr[i]);
+    //     }
+    // }
+
+    /*initialize uniqueNumVotes (key) array for grouping*/
+    printf("Grouping votes...\n");
+    unsigned int* uniqueNumVotes = (int*)malloc(noOfRec * sizeof(int));
+    unsigned int countUniqueVotes = countUnique(numVotes, noOfRec, uniqueNumVotes);
+    group** groupVotes = createGroups(numVotes, blockaddr, noOfRec);
+
+    group* cur = groupVotes[0];
+    printGroup(cur);
+    
+    // printf("Number of unique votes: %d\n", countUniqueVotes);
+    // for (int i = 0; i < countUniqueVotes; i++) {
+    //     printf("%d ",uniqueNumVotes[i]);
     // }
 
     // unsigned int data[] = {1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11,
@@ -112,17 +139,17 @@ int main() {
     //     "tt99232117.00", "tt99232117.00", "tt99232117.00", "tt99232117.00",
     //     "tt99232117.00", "tt99232117.00", "tt99232117.00", "tt99232117.00",
     //     "tt99232117.00", "tt99232117.00"};
-    //
+    
     // int size = sizeof(data) / sizeof(unsigned int);
 
     printf("---Experiment 2---\n");
-    node* root = bulkloadbpt(numVotes, blockaddr, noOfRec, NULL);
+    node* root = bulkloadbpt(uniqueNumVotes, groupVotes, countUniqueVotes, NULL);
     // node* root = bulkloadbpt(data, dataC, size, NULL);
 
     // printf("%d %d\n", root->keys[0], root->keys[1]);
 
     // printbpt(root);
-    saveToFile(root);
+    // saveToFile(root);
 
     return 0;
 }

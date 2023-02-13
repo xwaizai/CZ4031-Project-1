@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "group.h"
 
 #define KEYS 16  // 16
 #define PTR 17   // 17
@@ -18,7 +19,7 @@ typedef struct node {
 } node;
 
 node* bulkloadbpt(unsigned int* numVotesArr,
-                  char** blkAddArr,
+                  group** blkAddArr,
                   int numVotesLength,
                   node* root);
 void printbpt(node* root);
