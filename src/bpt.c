@@ -136,6 +136,7 @@ node* updateParent(node* parent,
     //  case 1 parent exist and can insert
     if (parent->size < KEYS) {
         insertParent(parent, smallestRight, childLeft, childRight);
+        updateParentKeys(parent);
         return parent;
     }
 
@@ -152,6 +153,7 @@ node* updateParent(node* parent,
         updateParentKeys(coparent);
         node* grandparent =
             updateParent(parent->parent, parent, coparent, coparent->keys[0]);
+        updateParentKeys(grandparent);
         parent->parent = grandparent;
         coparent->parent = grandparent;
 
