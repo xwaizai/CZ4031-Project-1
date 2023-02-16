@@ -43,16 +43,20 @@ int main() {
     int j = 0;
     int numRec = 0;
     memBlock* current = head;
+    memBlock* last = NULL;
     while (current) {
         blocks++;
         /*for(int i =0 ; i < 200 ;i++){
             printf("%c", current->block[i]);
         }
         printf("\n");*/
+        if(current->next==NULL){
+            last = current;
+        }
         current = current->next;
     }
     while (j < 200) {
-        if (head->block[j] == 't') {
+        if (last->block[j] == 't') {
             numRec++;
         }
         j += 20;
@@ -92,8 +96,8 @@ int main() {
                 numVotes[blockaddrIndex] = numVote;
                 blockaddr[blockaddrIndex] = &(current->block[i]);
 
-                if (numVotes[blockaddrIndex] == 0)
-                    printf("%d\n", numVotes[blockaddrIndex]);
+                // if (numVotes[blockaddrIndex] == 0)
+                //     printf("%d\n", numVotes[blockaddrIndex]);
 
                 // printf("%d,%c\n", numVotes[blockaddrIndex],
                 //        *(blockaddr[blockaddrIndex]));
@@ -103,7 +107,7 @@ int main() {
         }
         current = current->next;
     }
-    printf("%d\n", noOfRec);
+    //printf("Number of records %d\n", noOfRec);
 
     /*using quicksort algo to sort the arrays*/
     //printf("Sorting array...\n");
@@ -151,14 +155,14 @@ int main() {
     node* root = NULL;
     for (int i = 0; i < noOfRec; i++)
     {   
-        printf("Inserting %d\n", numVotes[i]);
+        //printf("Inserting %d\n", numVotes[i]);
         root = insertbpt(root,numVotes[i],blockaddr[i]);
         /*for (int i = 0; i < root->size; i++)
         {
             printf("%d ",root->keys[i]);
         }
         printf("\n");*/
-        printbpt(root);
+        //printbpt(root);
     }
     
 

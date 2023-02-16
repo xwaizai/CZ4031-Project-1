@@ -1,6 +1,9 @@
 #include <memBlock.h>
 
-memBlock* fillmemBlock(char* input, int length, memBlock* current) {
+memBlock* fillmemBlock(char* input, int length, memBlock* tail) {
+    
+    memBlock* current = tail;
+
     /*Case 1 when memory block is not full and input length is within the
      * BLOCKSIZE*/
     if (!current->isFull && current->blockIndex + length <= BLOCKSIZE) {
@@ -9,14 +12,18 @@ memBlock* fillmemBlock(char* input, int length, memBlock* current) {
         if (current->blockIndex >= BLOCKSIZE) {
             current->isFull = true;
         }
+        tail = current;
         /*Case 2 when memory block is full or input length exceeds the
          * BLOCKSIZE*/
     } else {
         memBlock* new = (memBlock*)malloc(sizeof(memBlock));
-        new->next = current;
-        current = new;
-        memmove(current->block, input, length);
-        current->blockIndex += length;
+        new->isFull = false;
+        new->next = NULL;
+        current->next = new;
+        memmove(new->block, input, length);
+        new->blockIndex += length;
+        tail = new;
     }
-    return current;
+    
+    return tail;
 }

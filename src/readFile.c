@@ -16,8 +16,10 @@ memBlock* readFromFile(memBlock* current) {
     int index = 0;
     int initial = 0;
 
+    memBlock* tail = current;
+
     /* opening file for reading */
-    fp = fopen("data_test.tsv", "r");
+    fp = fopen("data.tsv", "r");
     if (fp == NULL) {
         perror("Error opening file");
         return current;
@@ -48,7 +50,8 @@ memBlock* readFromFile(memBlock* current) {
             }
 
             /*Insert to memory block*/
-            current = fillmemBlock(tobeinserted, sizeof(tobeinserted), current);
+            
+            tail = fillmemBlock(tobeinserted, sizeof(tobeinserted), tail);
 
             /*reset the tobeinserted array*/
             memset(tobeinserted, 0, sizeof(tobeinserted));

@@ -28,7 +28,7 @@ void updateParentKeys(node* parent) {
     if(parent == NULL){
         return;
     }
-    printf("Parent size %d Parent start %d\n",parent->size, parent->keys[0]);
+    //printf("Parent size %d Parent start %d\n",parent->size, parent->keys[0]);
     node* finder = NULL;
     for (int i = 0; i < parent->size; i++) {
         finder = parent->pointers[i + 1];
@@ -144,7 +144,7 @@ node* updateParent(node* parent,
         parent->parent = NULL;
         parent->size = 0;
     }
-    printf("Parent size %d Parent start %d\n",parent->size,parent->keys[0]);
+    //printf("Parent size %d Parent start %d\n",parent->size,parent->keys[0]);
     // case 1 parent exist and can insert
     if (parent->size < KEYS) {
         /*parent->keys[parent->size] = smallestRight;
@@ -370,8 +370,8 @@ void insertToLeaf(node* leaf,unsigned int key, char* addr){
         if(key == leaf->keys[i]){
             group* current = (group*)leaf->pointers[i];
             //printf("key %d\n",key);
-            printf("%d \n",current->key);
-            printf("%d \n",current->size);
+            //printf("%d \n",current->key);
+            //printf("%d \n",current->size);
             insertToGroup((group*)leaf->pointers[i],addr);
             return;
         }
