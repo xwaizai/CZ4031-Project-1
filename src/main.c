@@ -106,8 +106,8 @@ int main() {
     printf("%d\n", noOfRec);
 
     /*using quicksort algo to sort the arrays*/
-    printf("Sorting array...\n");
-    quickSort(numVotes, blockaddr, 0, noOfRec - 1);
+    //printf("Sorting array...\n");
+    //quickSort(numVotes, blockaddr, 0, noOfRec - 1);
 
     // for (int i = 0; i < noOfRec; i++) {
     //     if (i<=46){
@@ -117,13 +117,13 @@ int main() {
     // }
 
     /*initialize uniqueNumVotes (key) array for grouping*/
-    printf("Grouping votes...\n");
-    unsigned int* uniqueNumVotes = (int*)malloc(noOfRec * sizeof(int));
-    unsigned int countUniqueVotes = countUnique(numVotes, noOfRec, uniqueNumVotes);
-    group** groupVotes = createGroups(numVotes, blockaddr, noOfRec);
+    //printf("Grouping votes...\n");
+    //unsigned int* uniqueNumVotes = (int*)malloc(noOfRec * sizeof(int));
+    //unsigned int countUniqueVotes = countUnique(numVotes, noOfRec, uniqueNumVotes);
+    //group** groupVotes = createGroups(numVotes, blockaddr, noOfRec);
 
-    group* cur = groupVotes[0];
-    printGroup(cur);
+    //group* cur = groupVotes[0];
+    //printGroup(cur);
     
     // printf("Number of unique votes: %d\n", countUniqueVotes);
     // for (int i = 0; i < countUniqueVotes; i++) {
@@ -143,13 +143,28 @@ int main() {
     // int size = sizeof(data) / sizeof(unsigned int);
 
     printf("---Experiment 2---\n");
-    node* root = bulkloadbpt(uniqueNumVotes, groupVotes, countUniqueVotes, NULL);
+    //node* root = bulkloadbpt(uniqueNumVotes, groupVotes, countUniqueVotes, NULL);
     // node* root = bulkloadbpt(data, dataC, size, NULL);
 
     // printf("%d %d\n", root->keys[0], root->keys[1]);
 
-    // printbpt(root);
-    // saveToFile(root);
+    node* root = NULL;
+    for (int i = 0; i < noOfRec; i++)
+    {   
+        printf("Inserting %d\n", numVotes[i]);
+        root = insertbpt(root,numVotes[i],blockaddr[i]);
+        /*for (int i = 0; i < root->size; i++)
+        {
+            printf("%d ",root->keys[i]);
+        }
+        printf("\n");*/
+        printbpt(root);
+    }
+    
+
+    //printbpt(root);
+    saveToFile(root);
+    
 
     return 0;
 }

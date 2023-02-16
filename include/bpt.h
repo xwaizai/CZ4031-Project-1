@@ -24,5 +24,7 @@ node* bulkloadbpt(unsigned int* numVotesArr,
                   node* root);
 void printbpt(node* root);
 void saveToFile(node* root);
+node* searchleafnode(unsigned int key, node* root);
+node* insertbpt(node* root, unsigned int key, char* addr);
 
 #endif
