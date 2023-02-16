@@ -18,12 +18,6 @@ typedef struct node {
     struct node* parent;
 } node;
 
-node* bulkloadbpt(unsigned int* numVotesArr,
-                  group** blkAddArr,
-                  int numVotesLength,
-                  node* root);
-void printbpt(node* root);
-void saveToFile(node* root);
 node* searchleafnode(unsigned int key, node* root);
 node* insertbpt(node* root, unsigned int key, char* addr);
 

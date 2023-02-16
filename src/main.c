@@ -3,30 +3,11 @@
 #include <string.h>
 
 #include "bpt.h"
+#include "group.h"
 #include "memBlock.h"
+#include "misc.h"
 #include "readFile.h"
 #include "sorting.h"
-#include "group.h"
-
-/*Solely for debuging purposes*/
-void printRecord(char* record) {
-    for (int i = 0; i < 20; i++) {
-        printf("%c", *(record + i));
-        if (i == 8 || i == 12)
-            printf(" ");
-    }
-    printf("\n");
-}
-
-void printGroup(group* cur){
-    do{
-        for (int i=0; i<cur->size; i++){
-            printf("%d :",i);
-            printRecord(cur->pointers[i]);
-        }
-        cur=cur->next;
-    }while(cur);
-}
 
 int main() {
     printf("\tStart Of Program \t\n");
@@ -50,7 +31,7 @@ int main() {
             printf("%c", current->block[i]);
         }
         printf("\n");*/
-        if(current->next==NULL){
+        if (current->next == NULL) {
             last = current;
         }
         current = current->next;
@@ -107,68 +88,15 @@ int main() {
         }
         current = current->next;
     }
-    //printf("Number of records %d\n", noOfRec);
-
-    /*using quicksort algo to sort the arrays*/
-    //printf("Sorting array...\n");
-    //quickSort(numVotes, blockaddr, 0, noOfRec - 1);
-
-    // for (int i = 0; i < noOfRec; i++) {
-    //     if (i<=46){
-    //         printf("%d ", numVotes[i]);
-    //         printRecord(blockaddr[i]);
-    //     }
-    // }
-
-    /*initialize uniqueNumVotes (key) array for grouping*/
-    //printf("Grouping votes...\n");
-    //unsigned int* uniqueNumVotes = (int*)malloc(noOfRec * sizeof(int));
-    //unsigned int countUniqueVotes = countUnique(numVotes, noOfRec, uniqueNumVotes);
-    //group** groupVotes = createGroups(numVotes, blockaddr, noOfRec);
-
-    //group* cur = groupVotes[0];
-    //printGroup(cur);
-    
-    // printf("Number of unique votes: %d\n", countUniqueVotes);
-    // for (int i = 0; i < countUniqueVotes; i++) {
-    //     printf("%d ",uniqueNumVotes[i]);
-    // }
-
-    // unsigned int data[] = {1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11,
-    //                        12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
-    // char* dataC[] = {
-    //     "tt99166906.60", "tt99163168.40", "tt99165388.40", "tt99155207.00",
-    //     "tt99155106.00", "tt99155178.00", "tt99234117.00", "tt99234127.00",
-    //     "tt99234137.00", "tt99234127.00", "tt99232137.00", "tt99232117.00",
-    //     "tt99232117.00", "tt99232117.00", "tt99232117.00", "tt99232117.00",
-    //     "tt99232117.00", "tt99232117.00", "tt99232117.00", "tt99232117.00",
-    //     "tt99232117.00", "tt99232117.00"};
-    
-    // int size = sizeof(data) / sizeof(unsigned int);
 
     printf("---Experiment 2---\n");
-    //node* root = bulkloadbpt(uniqueNumVotes, groupVotes, countUniqueVotes, NULL);
-    // node* root = bulkloadbpt(data, dataC, size, NULL);
-
-    // printf("%d %d\n", root->keys[0], root->keys[1]);
-
     node* root = NULL;
-    for (int i = 0; i < noOfRec; i++)
-    {   
-        //printf("Inserting %d\n", numVotes[i]);
-        root = insertbpt(root,numVotes[i],blockaddr[i]);
-        /*for (int i = 0; i < root->size; i++)
-        {
-            printf("%d ",root->keys[i]);
-        }
-        printf("\n");*/
-        //printbpt(root);
+    for (int i = 0; i < noOfRec; i++) {
+        root = insertbpt(root, numVotes[i], blockaddr[i]);
     }
-    
 
-    //printbpt(root);
+    // printbpt(root);
     saveToFile(root);
-    
 
     return 0;
 }

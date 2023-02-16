@@ -1,0 +1,15 @@
+#ifndef MISC_H_
+#define MISC_H_
+
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "bpt.h"
+#include "group.h"
+#include "queue.h"
+
+void printbpt(node* root);
+void saveToFile(node* root);
+
+#endif
