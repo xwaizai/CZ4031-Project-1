@@ -43,13 +43,14 @@ int main() {
         j += 20;
     }
 
-    printf("Experiment 1\n");
+    printf("--- Experiment 1: Store data on disk ---\n");
     printf("Number of records: %lu\n", 10 * (blocks - 1) + numRec);
     printf("Size of records: 20\n");
     printf("Number of records stored in a block: %d\n", BLOCKSIZE / 20);
     printf("Number of blocks: %d\n", blocks);
 
     printf("size of unsigned int %d\n", sizeof(unsigned int));
+    printf("\n");
 
     /*store number of records*/
     unsigned int noOfRec = 10 * (blocks - 1) + numRec;
@@ -89,14 +90,24 @@ int main() {
         current = current->next;
     }
 
-    printf("---Experiment 2---\n");
+    printf("--- Experiment 2: Build B+ Tree on 'numVotes' ---\n");
     node* root = NULL;
     for (int i = 0; i < noOfRec; i++) {
         root = insertbpt(root, numVotes[i], blockaddr[i]);
     }
+    printBPTStats(root);
+    printf("\n");
 
     // printbpt(root);
     saveToFile(root);
+
+    printf("--- Experiment 3: Movies with 'numVotes' equal to 500 ---\n");
+    findNumVotes(500, root);
+    printf("\n");
+
+    printf("--- Experiment 4: Movies with 'numVotes' from 30,000 to 40,000 ---\n");
+    findRangeNumVotes(30000, 40000, root);
+    printf("\n");
 
     return 0;
 }

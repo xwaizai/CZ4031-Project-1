@@ -2,6 +2,7 @@
 #include <math.h>
 #include "group.h"
 #include "queue.h"
+#include "misc.h"
 
 void populateLeaf(unsigned int* numVotesArr,
                   group** blkAddArr,
@@ -179,6 +180,70 @@ node* searchLeafNode(unsigned int key, node* root) {
     return current;
 }
 
+node* searchLeafNodeNoIndex(unsigned int key, node* root, int* noIndex) {
+    int i = 0;
+    *noIndex = 1;
+    node* current = root;
+    while (!current->isLeaf) {
+        i = 0;
+        while (i < current->size) {
+            if (key < current->keys[i]) {
+                break;
+            }
+            i++;
+        }
+        current = (node*)current->pointers[i];
+        *noIndex += 1;
+    }
+
+    return current;
+}
+
+void findNumVotes(unsigned int key, node* root){
+    int i = 0, noBlocks = 0;
+    double totalRate = 0, count = 0;
+    node* leaf = searchLeafNodeNoIndex(key, root, &noBlocks);
+    printf("Number of index nodes accessed: %d\n", noBlocks);
+
+    while (i < leaf->size) {
+        if (key == leaf->keys[i]) {
+            printGroup(leaf->pointers[i], &noBlocks, &totalRate, &count);
+            break;
+        }
+        i++;
+    }
+
+    printf("Number of data blocks accessed: %d\n", noBlocks);
+    printf("Average of averageRating: %.2f\n", totalRate/count);
+}
+
+void findRangeNumVotes(unsigned int min, unsigned int max, node* root){
+    int i = 0, noBlocks = 0;
+    double totalRate = 0, count = 0;
+    node* leaf = searchLeafNodeNoIndex(min, root, &noBlocks);
+    printf("Number of index nodes accessed: %d\n", noBlocks);
+
+    while (i < leaf->size) {
+        if (leaf->keys[i] >= min && leaf->keys[i] <= max) {
+            printGroup(leaf->pointers[i], &noBlocks, &totalRate, &count);
+        }
+        i++;
+        if(i == leaf->size){
+            if(!leaf->pointers[KEYS]){
+                break;
+            }
+            leaf = (node*)leaf->pointers[KEYS];
+            i = 0;
+        }
+        if(leaf->keys[i]>max){
+            break;
+        }
+    }
+
+    printf("Number of data blocks accessed: %d\n", noBlocks);
+    printf("Average of averageRating: %.2f\n", totalRate/count);
+}
+
 void insertToGroup(group* keygroup, char* addr) {
     group* current = keygroup;
 
@@ -283,6 +348,7 @@ void insertToSplitLeaf(node* left, node* right, unsigned int key, char* addr) {
     left->parent = parent;
     right->parent = parent;
 
+    right->pointers[KEYS] = left->pointers[KEYS];
     left->pointers[KEYS] = right;
 }
 

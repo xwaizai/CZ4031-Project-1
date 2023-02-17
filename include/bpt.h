@@ -18,7 +18,9 @@ typedef struct node {
     struct node* parent;
 } node;
 
-node* searchleafnode(unsigned int key, node* root);
+node* searchLeafNode(unsigned int key, node* root);
+void findNumVotes(unsigned int key, node* root);
+void findRangeNumVotes(unsigned int min, unsigned int max, node* root);
 node* insertbpt(node* root, unsigned int key, char* addr);
 
 #endif
