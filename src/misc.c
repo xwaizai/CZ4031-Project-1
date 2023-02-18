@@ -35,6 +35,8 @@ void printGroup(group* cur, int* blocksAcc, double* totalRate, double* count) {
     do {
         for (int i = 0; i < cur->size; i++) {
             double value = getRateFromStr(cur->pointers[i]);
+            printRecord(cur->pointers[i]);
+            printf("%.2f\n ", value);
             (*totalRate) += value;
             (*count)++;
         }

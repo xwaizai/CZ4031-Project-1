@@ -50,7 +50,7 @@ memBlock* readFromFile(memBlock* current) {
             }
 
             /*Insert to memory block*/
-            
+
             tail = fillmemBlock(tobeinserted, sizeof(tobeinserted), tail);
 
             /*reset the tobeinserted array*/

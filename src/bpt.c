@@ -66,6 +66,8 @@ void shiftKeysInNonLeaf(node* parent, int p) {
 
 void splitParent(node* parent1, node* parent2, node* childRight) {
     int mid = parent1->size / 2;
+    void* temp;
+    node* childLeft;
 
     if (parent1->size % 2 == 1)
         mid = (parent1->size / 2) + 1;
@@ -91,6 +93,16 @@ void splitParent(node* parent1, node* parent2, node* childRight) {
         parent2->keys[findloc] = childRight->keys[0];
         parent2->pointers[findloc + 1] = childRight;
         parent2->size++;
+        // childRight->parent = parent2;
+    } else if (childRight->keys[0] < parent2->keys[0] &&
+               childRight->keys[0] < parent1->keys[parent1->size - 1]) {
+        findloc = findIdxToInsert(parent1, childRight->keys[0]);
+        shiftKeysInNonLeaf(parent1, findloc);
+
+        parent1->keys[findloc] = childRight->keys[0];
+        parent1->pointers[findloc + 1] = childRight;
+        parent1->size++;
+        // childRight->parent = parent1;
     } else {
         findloc = findIdxToInsert(parent1, childRight->keys[0]);
         shiftKeysInNonLeaf(parent1, findloc);
@@ -98,7 +110,18 @@ void splitParent(node* parent1, node* parent2, node* childRight) {
         parent1->keys[findloc] = childRight->keys[0];
         parent1->pointers[findloc + 1] = childRight;
         parent1->size++;
+
+        temp = parent2->pointers[0];
+        parent2->pointers[0] = parent1->pointers[parent1->size];
+        parent1->pointers[parent1->size] = temp;
+
+        // childRight->parent = parent2;
+
+        // childLeft = parent1->pointers[parent1->size];
+        // childLeft->parent = parent1;
     }
+
+    updateChildrenParent(parent1);
     updateChildrenParent(parent2);
 }
 
@@ -138,6 +161,8 @@ node* updateParent(node* parent,
     if (parent->size < KEYS) {
         insertParent(parent, smallestRight, childLeft, childRight);
         updateParentKeys(parent);
+        childLeft->parent = parent;
+        childRight->parent = parent;
         return parent;
     }
 
@@ -349,14 +374,12 @@ void insertToSplitLeaf(node* left, node* right, unsigned int key, char* addr) {
 
     node* parent = updateParent(left->parent, left, right, right->keys[0]);
 
-    left->parent = parent;
-    right->parent = parent;
-
     right->pointers[KEYS] = left->pointers[KEYS];
     left->pointers[KEYS] = right;
 }
 
 node* insertbpt(node* root, unsigned int key, char* addr) {
+    // printf("Inserting %d\n", key);
     if (root == NULL) {
         root = (node*)malloc(sizeof(node));
         root->keys[0] = key;
