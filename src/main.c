@@ -110,5 +110,9 @@ int main() {
     findRangeNumVotes(30000, 40000, root);
     printf("\n");
 
+    printf(
+        "--- Experiment 5: Delete Movies with 'numVotes' equal to 1,000 ---\n");
+    printf("\n");
+
     return 0;
 }
