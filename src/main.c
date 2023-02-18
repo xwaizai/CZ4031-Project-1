@@ -106,16 +106,14 @@ int main() {
     findNumVotes(500, root);
     printf("\n");
 
-    // printf(
-    //     "--- Experiment 4: Movies with 'numVotes' from 30,000 to 40,000
-    //     ---\n");
-    // findRangeNumVotes(30000, 40000, root);
-    // printf("\n");
+    printf(
+        "--- Experiment 4: Movies with 'numVotes' from 30,000 to 40,000---\n");
+    findRangeNumVotes(30000, 40000, root);
+    printf("\n");
 
-    // printf(
-    //     "--- Experiment 5: Delete Movies with 'numVotes' equal to 1,000
-    //     ---\n");
-    // printf("\n");
+    printf(
+        "--- Experiment 5: Delete Movies with 'numVotes' equal to 1,000---\n");
+    printf("\n");
 
     return 0;
 }

@@ -24,20 +24,35 @@ void printRate(char* rate) {
 
 double getRateFromStr(char* record) {
     // tt116457607.7194
-    int i = 1;
-    while (record[i] != '.') {
-        i++;
+
+    int commacount= 0;
+    int index = 0;
+    char temp[5];
+    unsigned int numVote;
+    for(int i =0 ; i<TOBEINSERTEDSIZE ; i++){
+        if(commacount == 2){
+            temp[index] = '\0';
+            break;
+        }
+        if(commacount == 1){
+            temp[index] = record[i];
+            index++;
+        }
+        
+        if(record[i] == ','){
+            commacount++;
+        }
     }
-    char str[5] = {record[i - 1], '.', record[i + 1], record[i + 2], '\0'};
-    return strtod(str, NULL);
+
+    return strtod(temp, NULL);
 }
 
 void printGroup(group* cur, int* blocksAcc, double* totalRate, double* count) {
     do {
         for (int i = 0; i < cur->size; i++) {
             double value = getRateFromStr(cur->pointers[i]);
-            printRecord(cur->pointers[i]);
-            printf("%.2f\n ", value);
+            //printRecord(cur->pointers[i]);
+            //printf("%.2f\n ", value);
             (*totalRate) += value;
             (*count)++;
         }

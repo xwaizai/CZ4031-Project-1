@@ -241,9 +241,9 @@ void findNumVotes(unsigned int key, node* root) {
 
     printGroup(leaf->pointers[i], &noBlocks, &totalRate, &count);
 
-    printf("%.2f / %.2f\n", totalRate, count);
+    //printf("%.2f / %.2f\n", totalRate, count);
     printf("Number of data blocks accessed: %d\n", noBlocks);
-    printf("Average of averageRating: %.2f\n", totalRate / count);
+    printf("Average of averageRating: %.4f\n", totalRate / count);
 }
 
 void findRangeNumVotes(unsigned int min, unsigned int max, node* root) {
@@ -268,9 +268,9 @@ void findRangeNumVotes(unsigned int min, unsigned int max, node* root) {
             break;
         }
     }
-
+    //printf("%.2f / %.2f\n", totalRate, count);
     printf("Number of data blocks accessed: %d\n", noBlocks);
-    printf("Average of averageRating: %.2f\n", totalRate / count);
+    printf("Average of averageRating: %.4f\n", totalRate / count);
 }
 
 void insertToGroup(group* keygroup, char* addr) {
