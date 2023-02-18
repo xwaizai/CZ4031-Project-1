@@ -7,6 +7,8 @@
 #include <string.h>
 #include "memBlock.h"
 
+#define TOBEINSERTEDSIZE 24
+
 memBlock* readFromFile(memBlock* current);
 
 #endif

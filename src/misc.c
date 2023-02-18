@@ -3,6 +3,7 @@
 #include <string.h>
 #include "bpt.h"
 #include "group.h"
+#include "readFile.h"
 
 void printRecord(char* record) {
     for (int i = 0; i < 20; i++) {
@@ -163,4 +164,29 @@ void saveToFile(node* root) {
     }
 
     fclose(fptr);
+}
+
+unsigned int getnumVote(char* record){
+    int commacount= 0;
+    int index = 0;
+    char temp[8];
+    unsigned int numVote;
+    for(int i =0 ; i<TOBEINSERTEDSIZE ; i++){
+        if(commacount == 3){
+            temp[index] = '\0';
+            break;
+        }
+        if(commacount == 2){
+            temp[index] = record[i];
+            index++;
+        }
+        
+        if(record[i] == ','){
+            commacount++;
+        }
+    }
+    
+    numVote = atoi(temp);
+
+    return numVote;
 }

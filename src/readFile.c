@@ -10,7 +10,7 @@ memBlock* readFromFile(memBlock* current) {
     char* token;
     int tokenlen;
 
-    char tobeinserted[20];
+    char tobeinserted[TOBEINSERTEDSIZE];
     memset(tobeinserted, 0, sizeof(tobeinserted));
 
     int index = 0;
@@ -34,22 +34,30 @@ memBlock* readFromFile(memBlock* current) {
             token = strtok(token, d);
             while (token != NULL) {
                 memmove(tobeinserted + index, token, strlen(token));
+                
                 index += strlen(token);
                 tokenlen = strlen(token);
 
                 token = strtok(NULL, d);
+                tobeinserted[index] = ',';
+                index += 1;
             }
-            /*check if rating is below 10*/
-            if (tobeinserted[10] == '.') {
-                /*shifting the array*/
-                for (int i = 20; i > 11; i--) {
-                    tobeinserted[i] = tobeinserted[i - 1];
-                }
-                /*adding 0 if it is not 10.0 eg. 5.5 becomes 5.50*/
-                tobeinserted[12] = '0';
-            }
+            // /*check if rating is below 10*/
+            // if (tobeinserted[10] == '.') {
+            //     /*shifting the array*/
+            //     for (int i = 20; i > 11; i--) {
+            //         tobeinserted[i] = tobeinserted[i - 1];
+            //     }
+            //     /*adding 0 if it is not 10.0 eg. 5.5 becomes 5.50*/
+            //     tobeinserted[12] = '0';
+            // }
 
             /*Insert to memory block*/
+
+            // for(int i = 0; i < 23 ; i++){
+            //     printf("%c ",tobeinserted[i]);
+            // }
+            // printf("\n");
 
             tail = fillmemBlock(tobeinserted, sizeof(tobeinserted), tail);
 

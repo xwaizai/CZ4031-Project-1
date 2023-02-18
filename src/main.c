@@ -37,19 +37,20 @@ int main() {
         current = current->next;
     }
     while (j < 200) {
+        //printf("%c , %d\n",last->block[j],j);
         if (last->block[j] == 't') {
             numRec++;
         }
-        j += 20;
+        j += 24;
     }
+    
 
     printf("--- Experiment 1: Store data on disk ---\n");
-    printf("Number of records: %lu\n", 10 * (blocks - 1) + numRec);
-    printf("Size of records: 20\n");
-    printf("Number of records stored in a block: %d\n", BLOCKSIZE / 20);
+    printf("Number of records: %lu\n", 8 * (blocks - 1) + numRec);
+    printf("Size of records: 24\n");
+    printf("Number of records stored in a block: %d\n", BLOCKSIZE / 24);
     printf("Number of blocks: %d\n", blocks);
 
-    printf("size of unsigned int %d\n", sizeof(unsigned int));
     printf("\n");
 
     /*store number of records*/
@@ -71,10 +72,10 @@ int main() {
     for
      * indexing*/
     while (current) {
-        for (int i = 0; i < 200; i += 20) {
+        for (int i = 0; i < 200; i += 24) {
             if (current->block[i] == 't') {
-                numVote = atoi(&(current->block[13 + i]));
-                // printf("numVote: %d\n", numVote);
+                numVote = getnumVote(&(current->block[i]));
+                //printf("numVote: %d\n", numVote);
                 numVotes[blockaddrIndex] = numVote;
                 blockaddr[blockaddrIndex] = &(current->block[i]);
 

@@ -13,5 +13,6 @@ void printbpt(node* root);
 void saveToFile(node* root);
 void printGroup(group* cur, int* blocksAcc, double* totalRate, double* count);
 void printBPTStats(node* root);
+unsigned int getnumVote(char* record);
 
 #endif
