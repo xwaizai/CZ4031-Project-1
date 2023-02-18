@@ -1,8 +1,8 @@
 #include "misc.h"
-#include "group.h"
-#include "bpt.h"
 #include <stdio.h>
 #include <string.h>
+#include "bpt.h"
+#include "group.h"
 
 void printRecord(char* record) {
     for (int i = 0; i < 20; i++) {
@@ -18,17 +18,17 @@ void printGroup(group* cur, int* blocksAcc, double* totalRate, double* count) {
 
     do {
         for (int i = 0; i < cur->size; i++) {
-            strncpy(rate, cur->pointers[i]+9, 4);
+            strncpy(rate, cur->pointers[i] + 9, 4);
             rate[4] = '\0';
             *totalRate += strtod(rate, NULL);
-            *count += 1;
+            *count++;
         }
         cur = cur->next;
-        *blocksAcc += 1;
+        *blocksAcc++;
     } while (cur);
 }
 
-void printBPTStats(node* root){
+void printBPTStats(node* root) {
     int noNodes = 1, noLevels = 1;
     node* ptr = root;
     node* cur = root;
@@ -53,7 +53,7 @@ void printBPTStats(node* root){
             }
         }
     }
-    
+
     while (!cur->isLeaf) {
         cur = (node*)cur->pointers[0];
         noLevels++;

@@ -1,8 +1,8 @@
 #include "bpt.h"
 #include <math.h>
 #include "group.h"
-#include "queue.h"
 #include "misc.h"
+#include "queue.h"
 
 void populateLeaf(unsigned int* numVotesArr,
                   group** blkAddArr,
@@ -199,7 +199,7 @@ node* searchLeafNodeNoIndex(unsigned int key, node* root, int* noIndex) {
     return current;
 }
 
-void findNumVotes(unsigned int key, node* root){
+void findNumVotes(unsigned int key, node* root) {
     int i = 0, noBlocks = 0;
     double totalRate = 0, count = 0;
     node* leaf = searchLeafNodeNoIndex(key, root, &noBlocks);
@@ -212,12 +212,12 @@ void findNumVotes(unsigned int key, node* root){
         }
         i++;
     }
-
+    printf("%.2f / %.2f\n", totalRate, count);
     printf("Number of data blocks accessed: %d\n", noBlocks);
-    printf("Average of averageRating: %.2f\n", totalRate/count);
+    printf("Average of averageRating: %.2f\n", totalRate / count);
 }
 
-void findRangeNumVotes(unsigned int min, unsigned int max, node* root){
+void findRangeNumVotes(unsigned int min, unsigned int max, node* root) {
     int i = 0, noBlocks = 0;
     double totalRate = 0, count = 0;
     node* leaf = searchLeafNodeNoIndex(min, root, &noBlocks);
@@ -228,20 +228,20 @@ void findRangeNumVotes(unsigned int min, unsigned int max, node* root){
             printGroup(leaf->pointers[i], &noBlocks, &totalRate, &count);
         }
         i++;
-        if(i == leaf->size){
-            if(!leaf->pointers[KEYS]){
+        if (i == leaf->size) {
+            if (!leaf->pointers[KEYS]) {
                 break;
             }
             leaf = (node*)leaf->pointers[KEYS];
             i = 0;
         }
-        if(leaf->keys[i]>max){
+        if (leaf->keys[i] > max) {
             break;
         }
     }
 
     printf("Number of data blocks accessed: %d\n", noBlocks);
-    printf("Average of averageRating: %.2f\n", totalRate/count);
+    printf("Average of averageRating: %.2f\n", totalRate / count);
 }
 
 void insertToGroup(group* keygroup, char* addr) {
@@ -252,7 +252,7 @@ void insertToGroup(group* keygroup, char* addr) {
     }
 
     current->pointers[current->size] = addr;
-    current->size += 1;
+    current->size++;
 
     if (current->size == GROUP_LEN) {
         group* newgroup = (group*)malloc(sizeof(group));
