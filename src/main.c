@@ -27,10 +27,10 @@ int main() {
     memBlock* last = NULL;
     while (current) {
         blocks++;
-        /*for(int i =0 ; i < 200 ;i++){
-            printf("%c", current->block[i]);
-        }
-        printf("\n");*/
+        // for (int i = 0; i < 200; i++) {
+        //     printf("%c", current->block[i]);
+        // }
+        // printf("\n");
         if (current->next == NULL) {
             last = current;
         }
@@ -105,7 +105,8 @@ int main() {
     findNumVotes(500, root);
     printf("\n");
 
-    printf("--- Experiment 4: Movies with 'numVotes' from 30,000 to 40,000 ---\n");
+    printf(
+        "--- Experiment 4: Movies with 'numVotes' from 30,000 to 40,000 ---\n");
     findRangeNumVotes(30000, 40000, root);
     printf("\n");
 

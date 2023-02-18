@@ -202,16 +202,20 @@ node* searchLeafNodeNoIndex(unsigned int key, node* root, int* noIndex) {
 void findNumVotes(unsigned int key, node* root) {
     int i = 0, noBlocks = 0;
     double totalRate = 0, count = 0;
+    printf("keys to search: %d\n", key);
     node* leaf = searchLeafNodeNoIndex(key, root, &noBlocks);
     printf("Number of index nodes accessed: %d\n", noBlocks);
 
     while (i < leaf->size) {
-        if (key == leaf->keys[i]) {
-            printGroup(leaf->pointers[i], &noBlocks, &totalRate, &count);
+        if (key == leaf->keys[i])
             break;
-        }
         i++;
     }
+
+    printf("current leaf: %d\n", leaf->keys[i]);
+
+    printGroup(leaf->pointers[i], &noBlocks, &totalRate, &count);
+
     printf("%.2f / %.2f\n", totalRate, count);
     printf("Number of data blocks accessed: %d\n", noBlocks);
     printf("Average of averageRating: %.2f\n", totalRate / count);

@@ -7,24 +7,39 @@
 void printRecord(char* record) {
     for (int i = 0; i < 20; i++) {
         printf("%c", *(record + i));
-        if (i == 8 || i == 12)
+        if (record[i] == ' ')
             printf(" ");
     }
     printf("\n");
 }
 
-void printGroup(group* cur, int* blocksAcc, double* totalRate, double* count) {
-    char rate[5];
+void printRate(char* rate) {
+    int i = 0;
+    while (rate[i] != '\0') {
+        printf("%c", rate[i++]);
+    }
+    printf("\n");
+}
 
+double getRateFromStr(char* record) {
+    // tt116457607.7194
+    int i = 1;
+    while (record[i] != '.') {
+        i++;
+    }
+    char str[5] = {record[i - 1], '.', record[i + 1], record[i + 2], '\0'};
+    return strtod(str, NULL);
+}
+
+void printGroup(group* cur, int* blocksAcc, double* totalRate, double* count) {
     do {
         for (int i = 0; i < cur->size; i++) {
-            strncpy(rate, cur->pointers[i] + 9, 4);
-            rate[4] = '\0';
-            *totalRate += strtod(rate, NULL);
-            *count++;
+            double value = getRateFromStr(cur->pointers[i]);
+            (*totalRate) += value;
+            (*count)++;
         }
         cur = cur->next;
-        *blocksAcc++;
+        (*blocksAcc)++;
     } while (cur);
 }
 
