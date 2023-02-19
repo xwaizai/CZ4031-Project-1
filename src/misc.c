@@ -5,6 +5,13 @@
 #include "group.h"
 #include "readFile.h"
 
+void printmemBlock(memBlock* current){
+    for (int i = 0; i < BLOCKSIZE; i++) {
+        printf("%c", current->block[i]);
+    }
+    printf("\n");
+}
+
 void printRecord(char* record) {
     for (int i = 0; i < 20; i++) {
         printf("%c", *(record + i));

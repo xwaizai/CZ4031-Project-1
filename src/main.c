@@ -43,12 +43,15 @@ int main() {
         }
         j += 24;
     }
-    
+
+    printf("--- Example of records in a memory block ---\n");
+    printmemBlock(head);
+    printf("\n");
 
     printf("--- Experiment 1: Store data on disk ---\n");
-    printf("Number of records: %lu\n", 8 * (blocks - 1) + numRec);
-    printf("Size of records: 24\n");
-    printf("Number of records stored in a block: %d\n", BLOCKSIZE / 24);
+    printf("Number of records: %lu\n", (BLOCKSIZE / TOBEINSERTEDSIZE) * (blocks - 1) + numRec);
+    printf("Size of records: %d\n",TOBEINSERTEDSIZE);
+    printf("Number of records stored in a block: %d\n", BLOCKSIZE / TOBEINSERTEDSIZE);
     printf("Number of blocks: %d\n", blocks);
 
     printf("\n");

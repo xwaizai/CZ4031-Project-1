@@ -8,7 +8,9 @@
 #include "bpt.h"
 #include "group.h"
 #include "queue.h"
+#include "memBlock.h"
 
+void printmemBlock(memBlock* current);
 void printbpt(node* root);
 void saveToFile(node* root);
 void printGroup(group* cur, int* blocksAcc, double* totalRate, double* count);

@@ -8,7 +8,7 @@
 
 #define BLOCKSIZE 200
 
-#define DISKSIZE BLOCKSIZE * 2 * 1024 * 1024
+#define DISKSIZE BLOCKSIZE * 1024 * 1024
 
 typedef struct memBlock {
     char block[BLOCKSIZE];
