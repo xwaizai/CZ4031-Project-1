@@ -7,8 +7,8 @@
 #include <string.h>
 #include "group.h"
 
-#define KEYS 16  // 16
-#define PTR 17   // 17
+#define KEYS 14  // 14
+#define PTR 15   // 15
 
 typedef struct node {
     unsigned int keys[KEYS];

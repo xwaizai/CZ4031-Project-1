@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define GROUP_LEN 24
+#define GROUP_LEN 23
 
 typedef struct group {
     unsigned int key;

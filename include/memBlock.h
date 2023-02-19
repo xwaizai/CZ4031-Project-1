@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define BLOCKSIZE 200
+#define BLOCKSIZE 187
 
 #define DISKSIZE BLOCKSIZE * 1024 * 1024
 

@@ -13,7 +13,7 @@ void printmemBlock(memBlock* current){
 }
 
 void printRecord(char* record) {
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < TOBEINSERTEDSIZE; i++) {
         printf("%c", *(record + i));
         if (record[i] == ' ')
             printf(" ");
