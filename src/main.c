@@ -57,7 +57,7 @@ int main() {
     printf("\n");
 
     /*store number of records*/
-    unsigned int noOfRec = 10 * (blocks - 1) + numRec;
+    unsigned int noOfRec = BLOCKSIZE / TOBEINSERTEDSIZE * (blocks - 1) + numRec;
 
     /*initialise numVotes (key) array*/
     unsigned int* numVotes = (int*)malloc(noOfRec * sizeof(int));
