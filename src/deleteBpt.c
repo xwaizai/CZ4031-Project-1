@@ -17,15 +17,6 @@ void removeKeyFromNode(node* leafNode, unsigned int deleteKey) {
     leafNode->size--;
 }
 
-// node* findLeftSibling(node* curNode) {
-//     node* parentNode = curNode->parent;
-//     while(parentNode->parent != NULL) {
-//         parent
-
-
-//         parentNode = curNode->parent;
-//     }
-// }
 
 void deleteMain(node* leafNode, unsigned int deleteKey) {
 
@@ -35,12 +26,7 @@ void deleteMain(node* leafNode, unsigned int deleteKey) {
         // Need to update parent if is the first one
     }
     // CASE 2: Possible to borrow from sibling (left then right)
-    // else if(leaf->size < MINKEYS) {
-    //     nodeS
-    //     removeKeyFromNode(leafNode, deleteKey);
 
-    //     node* leftSibiling = findLeftSibling()
-    // }
 
 
     // CASE 3: NOT possible to borrow from sibling - Merge

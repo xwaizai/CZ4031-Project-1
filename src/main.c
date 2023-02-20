@@ -116,6 +116,7 @@ int main() {
 
     printf(
         "--- Experiment 5: Delete Movies with 'numVotes' equal to 1,000---\n");
+        deleteNumVotes(0);
     printf("\n");
 
     return 0;
