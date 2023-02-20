@@ -15,4 +15,6 @@ file(GLOB src_files CONFIGURE_DEPENDS
      "src/*.c"
 )
 
+list(FILTER src_files EXCLUDE REGEX ".*forref\\.c$")
+
 add_executable(${PROJECT_NAME} ${src_files})
