@@ -27,16 +27,16 @@ int main() {
     memBlock* last = NULL;
     while (current) {
         blocks++;
-        // for (int i = 0; i < 200; i++) {
-        //     printf("%c", current->block[i]);
-        // }
-        // printf("\n");
+        for (int i = 0; i < BLOCKSIZE; i++) {
+            printf("%c", current->block[i]);
+        }
+        printf("\n");
         if (current->next == NULL) {
             last = current;
         }
         current = current->next;
     }
-    while (j < 200) {
+    while (j < BLOCKSIZE) {
         //printf("%c , %d\n",last->block[j],j);
         if (last->block[j] == 't') {
             numRec++;
@@ -75,7 +75,7 @@ int main() {
     for
      * indexing*/
     while (current) {
-        for (int i = 0; i < 200; i += 24) {
+        for (int i = 0; i < BLOCKSIZE; i += 24) {
             if (current->block[i] == 't') {
                 numVote = getnumVote(&(current->block[i]));
                 //printf("numVote: %d\n", numVote);
