@@ -3,6 +3,7 @@
 #include "group.h"
 #include "misc.h"
 #include "queue.h"
+#include "deleteBpt.h"
 
 void populateLeaf(unsigned int* numVotesArr,
                   group** blkAddArr,
@@ -271,6 +272,18 @@ void findRangeNumVotes(unsigned int min, unsigned int max, node* root) {
     //printf("%.2f / %.2f\n", totalRate, count);
     printf("Number of data blocks accessed: %d\n", noBlocks);
     printf("Average of averageRating: %.4f\n", totalRate / count);
+}
+
+void deleteNumVotes(unsigned int key, node* root) {
+    int i = 0, noBlocks = 0;
+    double totalRate = 0, count = 0;
+    printf("keys to search: %d\n", key);
+    node* leaf = searchLeafNodeNoIndex(key, root, &noBlocks);
+
+    deleteMain(leaf, key);
+    
+    printf("Number of index nodes accessed: %d\n", noBlocks);
+
 }
 
 void insertToGroup(group* keygroup, char* addr) {
