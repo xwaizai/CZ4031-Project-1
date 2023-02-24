@@ -3,7 +3,6 @@
 #include "group.h"
 #include "misc.h"
 #include "queue.h"
-#include "deleteBpt.h"
 
 void populateLeaf(unsigned int* numVotesArr,
                   group** blkAddArr,
@@ -274,15 +273,99 @@ void findRangeNumVotes(unsigned int min, unsigned int max, node* root) {
     printf("Average of averageRating: %.4f\n", totalRate / count);
 }
 
+void removeKeyFromNode(node* leafNode, unsigned int key) {
+    int i, j;
+    for(i=0; i< leafNode->size; i++)
+        if(leafNode->keys[i] == key)
+            break;
+    
+    for(j=i; j<leafNode->size ; j++) {
+        leafNode->keys[j] = leafNode->keys[j+1];
+        leafNode->pointers[j] = leafNode->pointers[j+1];
+    }
+    leafNode->keys[j] = NULL;
+    leafNode->pointers[j] = NULL;
+    leafNode->size--;
+}
+
+void takeKeyFromNode(node* targetNode, node* donorNode, unsigned int key) {
+    int i, j;
+
+    for(i=0; i< targetNode->size; i++)
+        if(targetNode->keys[i] == key)
+            break;
+
+    if(donorNode->keys[0] > key){
+        for(j=i; j<targetNode->size ; j++) {
+            targetNode->keys[j] = targetNode->keys[j+1];
+            targetNode->pointers[j] = targetNode->pointers[j+1];
+        }
+        targetNode->keys[j] = donorNode->keys[0];
+        targetNode->pointers[j] = donorNode->pointers[0];
+        for(i=0; i<donorNode->size ; i++) {
+            donorNode->keys[i] = donorNode->keys[i+1];
+            donorNode->pointers[i] = donorNode->pointers[i+1];
+        }
+        donorNode->keys[j] = NULL;
+        donorNode->pointers[j] = NULL;
+        donorNode->size--;
+    }else{
+        for(j=i; j>0 ; j--) {
+            targetNode->keys[j] = targetNode->keys[j-1];
+            targetNode->pointers[j] = targetNode->pointers[j-1];
+        }
+        targetNode->keys[0] = donorNode->keys[donorNode->size-1];
+        targetNode->pointers[0] = donorNode->pointers[donorNode->size-1];
+        donorNode->keys[donorNode->size-1] = NULL;
+        donorNode->pointers[donorNode->size-1] = NULL;
+        donorNode->size--;
+    }
+
+    updateParentKeys(targetNode->parent);
+}
+
 void deleteNumVotes(unsigned int key, node* root) {
     int i = 0, noBlocks = 0;
     double totalRate = 0, count = 0;
     printf("keys to search: %d\n", key);
-    node* leaf = searchLeafNodeNoIndex(key, root, &noBlocks);
+    node* curNode = searchLeafNodeNoIndex(key, root, &noBlocks);
 
-    deleteMain(leaf, key);
+    // CASE 1: Easy Case - don't need to merge or borrow sibling
+    if(curNode->size-1 >= (KEYS+1)/2)
+        removeKeyFromNode(curNode, key);
+    else{
+        curNode = curNode->parent;
+        do{
+           for(i=0; i< curNode->size; i++){
+            if (key < curNode->keys[i]){
+                node* donorNode;
+                // Get Sibling
+                if(i==0){
+                    donorNode = (node*)curNode->pointers[i+1];
+                }else{
+                    donorNode = (node*)curNode->pointers[i-1];
+                    if((donorNode->isLeaf && donorNode->size == (KEYS+1)/2) || donorNode->size == KEYS/2){
+                        donorNode = (node*)curNode->pointers[i+1];
+                    }
+                }
+                
+                // CASE 2: Possible to borrow from sibling (left then right)
+                if((donorNode->isLeaf && donorNode->size > (KEYS+1)/2) || donorNode->size > KEYS/2){
+                    takeKeyFromNode((node*)curNode->pointers[i], donorNode, key);
+                }
+            }
+        } 
+        }while(curNode->size < KEYS/2);
+    }
     
-    printf("Number of index nodes accessed: %d\n", noBlocks);
+
+    
+
+    // CASE 3: NOT possible to borrow from sibling - Merge
+
+    // Check if less than minimum size
+    
+    //printf("Number of index nodes accessed: %d\n", noBlocks);
 
 }
 

@@ -27,10 +27,10 @@ int main() {
     memBlock* last = NULL;
     while (current) {
         blocks++;
-        for (int i = 0; i < BLOCKSIZE; i++) {
+        /*for (int i = 0; i < BLOCKSIZE; i++) {
             printf("%c", current->block[i]);
         }
-        printf("\n");
+        printf("\n");*/
         if (current->next == NULL) {
             last = current;
         }
@@ -99,7 +99,7 @@ int main() {
     for (int i = 0; i < noOfRec; i++) {
         root = insertbpt(root, numVotes[i], blockaddr[i]);
     }
-    printBPTStats(root);
+    //printBPTStats(root);
     printf("\n");
 
     // printbpt(root);
@@ -116,7 +116,7 @@ int main() {
 
     printf(
         "--- Experiment 5: Delete Movies with 'numVotes' equal to 1,000---\n");
-        deleteNumVotes(0);
+        //deleteNumVotes(0);
     printf("\n");
 
     return 0;
