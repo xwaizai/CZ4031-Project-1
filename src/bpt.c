@@ -353,20 +353,82 @@ void deleteNumVotes(unsigned int key, node* root) {
                 if((donorNode->isLeaf && donorNode->size > (KEYS+1)/2) || donorNode->size > KEYS/2){
                     takeKeyFromNode((node*)curNode->pointers[i], donorNode, key);
                 }
+
+                 // CASE 3: Need to merge with sibling (left then right)
+                else {
+                    if (i == 0) { // merge with right sibling
+                        mergeNodes(curNode->pointers[i], curNode->pointers[i+1]);
+                        removeKeyFromNode(curNode, curNode->keys[i]);
+                    } 
+                    else { // merge with left sibling
+                        mergeNodes(curNode->pointers[i-1], curNode->pointers[i]);
+                        removeKeyFromNode(curNode, curNode->keys[i-1]);
+                    }
+                    updateParentKeys(curNode->parent);
+                    break;
+                }
             }
         } 
-        }while(curNode->size < KEYS/2);
+        }while(curNode->size < KEYS/2 && curNode->parent != NULL);
     }
-    
+}
 
-    
 
-    // CASE 3: NOT possible to borrow from sibling - Merge
+   void mergeNodes(node* leftNode, node* rightNode, node* parent) {
+    int i;
+    // Merge the keys and pointers of the right node into the left node
+    for(i=0; i< rightNode->size ; i++) {
+        leftNode->keys[leftNode->size] = rightNode->keys[i];
+        leftNode->pointers[leftNode->size] = rightNode->pointers[i];
+        leftNode->size++;
+    }
+    leftNode->pointers[leftNode->size] = rightNode->pointers[rightNode->size];
+    leftNode->size++;
 
-    // Check if less than minimum size
-    
-    //printf("Number of index nodes accessed: %d\n", noBlocks);
+    // Delete the right node and update the parent's pointers and keys
+    for(i=0; i< parent->size ; i++){
+        if(parent->pointers[i] == rightNode){
+            parent->pointers[i] = NULL;
+            break;
+        }
+    }
 
+    removeKeyFromNode(parent, parent->keys[i]);
+
+    free(rightNode);
+
+    // Recursively call the function with the parent as the new leftNode, the next sibling as rightNode, and the grandparent as the new parent.
+    if(parent->size < (KEYS)/2 && parent->parent != NULL){
+        int j;
+        node* grandparent = parent->parent;
+        for(j=0; j< grandparent->size ; j++){
+            if(grandparent->pointers[j] == parent){
+                break;
+            }
+        }
+
+        node* leftSibling = NULL;
+        node* rightSibling = NULL;
+
+        if(j > 0){
+            leftSibling = (node*)grandparent->pointers[j-1];
+        }
+        if(j < grandparent->size - 1){
+            rightSibling = (node*)grandparent->pointers[j+1];
+        }
+
+        if(leftSibling != NULL && leftSibling->size > (KEYS)/2){
+            takeKeyFromNode(parent, leftSibling, grandparent->keys[j-1]);
+        }else if(rightSibling != NULL && rightSibling->size > (KEYS)/2){
+            takeKeyFromNode(parent, rightSibling, grandparent->keys[j]);
+        }else{
+            if(leftSibling != NULL){
+                mergeNodes(leftSibling, parent, grandparent);
+            }else{
+                mergeNodes(parent, rightSibling, grandparent);
+            }
+        }
+    }
 }
 
 void insertToGroup(group* keygroup, char* addr) {
