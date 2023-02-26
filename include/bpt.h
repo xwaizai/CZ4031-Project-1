@@ -7,7 +7,7 @@
 #include <string.h>
 #include "group.h"
 
-#define KEYS 5  // 14
+#define KEYS 14  // 14
 #define PTR KEYS + 1   // 15
 
 typedef struct node {
@@ -21,7 +21,7 @@ typedef struct node {
 node* searchLeafNode(unsigned int key, node* root);
 void findNumVotes(unsigned int key, node* root);
 void findRangeNumVotes(unsigned int min, unsigned int max, node* root);
-void deleteNumVotes(unsigned int key, node* root);
+void deleteNumVotes(unsigned int key, node** root);
 node* insertbpt(node* root, unsigned int key, char* addr);
 
 

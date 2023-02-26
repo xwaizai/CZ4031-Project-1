@@ -12,7 +12,7 @@
 
 void printmemBlock(memBlock* current);
 void printbpt(node* root);
-void saveToFile(node* root);
+void saveToFile(node* root, char* fileName);
 void printGroup(group* cur, int* blocksAcc, double* totalRate, double* count);
 void printBPTStats(node* root);
 unsigned int getnumVote(char* record);

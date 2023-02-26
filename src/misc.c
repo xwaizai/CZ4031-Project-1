@@ -144,12 +144,12 @@ void printbpt(node* root) {
     }
 }
 
-void saveToFile(node* root) {
+void saveToFile(node* root, char* fileName) {
     int num;
     FILE* fptr;
 
     // use appropriate location if you are using MacOS or Linux
-    fptr = fopen("out.txt", "w");
+    fptr = fopen(fileName, "w");
 
     if (fptr == NULL) {
         printf("Error!");

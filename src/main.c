@@ -103,7 +103,7 @@ int main() {
     printf("\n");
 
     // printbpt(root);
-    saveToFile(root);
+    saveToFile(root, "Base_Tree.txt");
 
     printf("--- Experiment 3: Movies with 'numVotes' equal to 500 ---\n");
     //findNumVotes(500, root);
@@ -117,23 +117,11 @@ int main() {
     printf("\n");
 
     printf(
-        "--- Base Tree ---\n");
-    printbpt(root);
-    printf("\n");
-
-    printf(
         "--- Experiment 5: Delete Movies with 'numVotes' equal to 1,000---\n");
-    deleteNumVotes(18,root);
-    printbpt(root);
+    deleteNumVotes(1000,&root);
     printf("\n");
-
-    deleteNumVotes(20,root);
-    printbpt(root);
-    printf("\n");
-
-    deleteNumVotes(16,root);
-    printbpt(root);
-    printf("\n");
+    
+    saveToFile(root, "Delete_Tree.txt");
 
     return 0;
 }
