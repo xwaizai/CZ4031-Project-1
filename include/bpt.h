@@ -7,7 +7,7 @@
 #include <string.h>
 #include "group.h"
 
-#define KEYS 14  // 14
+#define KEYS 5  // 14
 #define PTR KEYS + 1   // 15
 
 typedef struct node {

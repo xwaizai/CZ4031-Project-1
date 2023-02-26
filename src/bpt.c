@@ -273,41 +273,41 @@ void findRangeNumVotes(unsigned int min, unsigned int max, node* root) {
     printf("Average of averageRating: %.4f\n", totalRate / count);
 }
 
-void removeKeyFromNode(node* leafNode, unsigned int key) {
+void removeKeyFromNode(node* keyNode, unsigned int key) {
     int i, j;
-    for(i=0; i< leafNode->size; i++)
-        if(leafNode->keys[i] == key)
+    for(i=0; i< keyNode->size; i++)
+        if(keyNode->keys[i] == key)
             break;
     
-    for(j=i; j<leafNode->size ; j++) {
-        leafNode->keys[j] = leafNode->keys[j+1];
-        leafNode->pointers[j] = leafNode->pointers[j+1];
+    for(j=i; j<keyNode->size ; j++) {
+        keyNode->keys[j] = keyNode->keys[j+1];
+        keyNode->pointers[j] = keyNode->pointers[j+1];
     }
-    leafNode->keys[j] = NULL;
-    leafNode->pointers[j] = NULL;
-    leafNode->size--;
+    keyNode->keys[j] = NULL;
+    keyNode->pointers[j] = NULL;
+    keyNode->size--;
 }
 
 void takeKeyFromNode(node* targetNode, node* donorNode, unsigned int key) {
     int i, j;
 
     for(i=0; i< targetNode->size; i++)
-        if(targetNode->keys[i] == key)
+        if(key==targetNode->keys[i])
             break;
 
     if(donorNode->keys[0] > key){
-        for(j=i; j<targetNode->size ; j++) {
+        for(j=i; j<targetNode->size; j++) {
             targetNode->keys[j] = targetNode->keys[j+1];
             targetNode->pointers[j] = targetNode->pointers[j+1];
         }
-        targetNode->keys[j] = donorNode->keys[0];
-        targetNode->pointers[j] = donorNode->pointers[0];
+        targetNode->keys[j-1] = donorNode->keys[0];
+        targetNode->pointers[j-1] = donorNode->pointers[0];
         for(i=0; i<donorNode->size ; i++) {
             donorNode->keys[i] = donorNode->keys[i+1];
             donorNode->pointers[i] = donorNode->pointers[i+1];
         }
-        donorNode->keys[j] = NULL;
-        donorNode->pointers[j] = NULL;
+        donorNode->keys[i] = NULL;
+        donorNode->pointers[i] = NULL;
         donorNode->size--;
     }else{
         for(j=i; j>0 ; j--) {
@@ -324,66 +324,20 @@ void takeKeyFromNode(node* targetNode, node* donorNode, unsigned int key) {
     updateParentKeys(targetNode->parent);
 }
 
-void deleteNumVotes(unsigned int key, node* root) {
-    int i = 0, noBlocks = 0;
-    double totalRate = 0, count = 0;
-    printf("keys to search: %d\n", key);
-    node* curNode = searchLeafNodeNoIndex(key, root, &noBlocks);
-
-    // CASE 1: Easy Case - don't need to merge or borrow sibling
-    if(curNode->size-1 >= (KEYS+1)/2)
-        removeKeyFromNode(curNode, key);
-    else{
-        curNode = curNode->parent;
-        do{
-           for(i=0; i< curNode->size; i++){
-            if (key < curNode->keys[i]){
-                node* donorNode;
-                // Get Sibling
-                if(i==0){
-                    donorNode = (node*)curNode->pointers[i+1];
-                }else{
-                    donorNode = (node*)curNode->pointers[i-1];
-                    if((donorNode->isLeaf && donorNode->size == (KEYS+1)/2) || donorNode->size == KEYS/2){
-                        donorNode = (node*)curNode->pointers[i+1];
-                    }
-                }
-                
-                // CASE 2: Possible to borrow from sibling (left then right)
-                if((donorNode->isLeaf && donorNode->size > (KEYS+1)/2) || donorNode->size > KEYS/2){
-                    takeKeyFromNode((node*)curNode->pointers[i], donorNode, key);
-                }
-
-                 // CASE 3: Need to merge with sibling (left then right)
-                else {
-                    if (i == 0) { // merge with right sibling
-                        mergeNodes(curNode->pointers[i], curNode->pointers[i+1]);
-                        removeKeyFromNode(curNode, curNode->keys[i]);
-                    } 
-                    else { // merge with left sibling
-                        mergeNodes(curNode->pointers[i-1], curNode->pointers[i]);
-                        removeKeyFromNode(curNode, curNode->keys[i-1]);
-                    }
-                    updateParentKeys(curNode->parent);
-                    break;
-                }
-            }
-        } 
-        }while(curNode->size < KEYS/2 && curNode->parent != NULL);
-    }
-}
-
-
-   void mergeNodes(node* leftNode, node* rightNode, node* parent) {
+void mergeNodes(node* leftNode, node* rightNode) {
     int i;
+    node* parent = leftNode->parent;
     // Merge the keys and pointers of the right node into the left node
     for(i=0; i< rightNode->size ; i++) {
         leftNode->keys[leftNode->size] = rightNode->keys[i];
         leftNode->pointers[leftNode->size] = rightNode->pointers[i];
         leftNode->size++;
     }
-    leftNode->pointers[leftNode->size] = rightNode->pointers[rightNode->size];
-    leftNode->size++;
+
+    if (leftNode->isLeaf)
+        leftNode->pointers[KEYS] = rightNode->pointers[KEYS];
+    else
+        leftNode->pointers[leftNode->size] = rightNode->pointers[rightNode->size];
 
     // Delete the right node and update the parent's pointers and keys
     for(i=0; i< parent->size ; i++){
@@ -393,11 +347,15 @@ void deleteNumVotes(unsigned int key, node* root) {
         }
     }
 
+    if(i==parent->size)
+        i--;
+
     removeKeyFromNode(parent, parent->keys[i]);
 
     free(rightNode);
 
-    // Recursively call the function with the parent as the new leftNode, the next sibling as rightNode, and the grandparent as the new parent.
+    /*Recursively call the function with the parent as the new leftNode, 
+      the next sibling as rightNode, and the grandparent as the new parent.*/
     if(parent->size < (KEYS)/2 && parent->parent != NULL){
         int j;
         node* grandparent = parent->parent;
@@ -423,9 +381,63 @@ void deleteNumVotes(unsigned int key, node* root) {
             takeKeyFromNode(parent, rightSibling, grandparent->keys[j]);
         }else{
             if(leftSibling != NULL){
-                mergeNodes(leftSibling, parent, grandparent);
+                mergeNodes(leftSibling, parent);
             }else{
-                mergeNodes(parent, rightSibling, grandparent);
+                mergeNodes(parent, rightSibling);
+            }
+        }
+    }else if(parent->parent == NULL && parent->size==0){
+        printf("leftNode size: %d\n", leftNode->size);
+        parent = leftNode;
+        printbpt(parent);
+    }
+}
+
+void deleteNumVotes(unsigned int key, node* root) {
+    int i = 0, noBlocks = 0;
+    double totalRate = 0, count = 0;
+    node* donorNode;
+    node* targetNode;
+    printf("keys to search: %d\n", key);
+    node* curNode = searchLeafNodeNoIndex(key, root, &noBlocks);
+
+    // CASE 1: Easy Case - don't need to merge or borrow sibling
+    if(curNode->size-1 >= (KEYS+1)/2){
+        removeKeyFromNode(curNode, key);
+    }else{
+        curNode = curNode->parent;
+        for(i=0; i<curNode->size; i++){
+            if (key < curNode->keys[i] || i==curNode->size-1){
+                targetNode = (node*)curNode->pointers[i];
+                // Get Sibling
+                if(i==curNode->size-1 && key > curNode->keys[i]){
+                    donorNode = (node*)curNode->pointers[i];
+                    targetNode = (node*)curNode->pointers[i+1];
+                }else if(i==0){
+                    donorNode = (node*)curNode->pointers[i+1];
+                }else{
+                    donorNode = (node*)curNode->pointers[i-1];
+                    if((!donorNode->isLeaf && donorNode->size == KEYS/2) || donorNode->size == (KEYS+1)/2){
+                        donorNode = (node*)curNode->pointers[i+1];
+                    }
+                }
+                
+                // CASE 2: Possible to borrow from sibling (left then right)
+                if((!donorNode->isLeaf && donorNode->size > KEYS/2) || donorNode->size > (KEYS+1)/2){
+                    takeKeyFromNode(targetNode, donorNode, key);
+                }
+                // CASE 3: Need to merge with sibling (left then right)
+                else {
+                    removeKeyFromNode(curNode->pointers[i], key);
+                    if (i == 0) { // merge with right sibling
+                        mergeNodes(curNode->pointers[i], curNode->pointers[i+1]);
+                    } 
+                    else { // merge with left sibling
+                        mergeNodes(curNode->pointers[i-1], curNode->pointers[i]);
+                    }
+                    updateParentKeys(curNode->parent);
+                    break;
+                }
             }
         }
     }

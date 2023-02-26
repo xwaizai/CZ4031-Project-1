@@ -106,17 +106,33 @@ int main() {
     saveToFile(root);
 
     printf("--- Experiment 3: Movies with 'numVotes' equal to 500 ---\n");
-    findNumVotes(500, root);
+    //findNumVotes(500, root);
+    findNumVotes(16, root);
     printf("\n");
 
     printf(
         "--- Experiment 4: Movies with 'numVotes' from 30,000 to 40,000---\n");
-    findRangeNumVotes(30000, 40000, root);
+    //findRangeNumVotes(30000, 40000, root);
+    findRangeNumVotes(16, 40, root);
+    printf("\n");
+
+    printf(
+        "--- Base Tree ---\n");
+    printbpt(root);
     printf("\n");
 
     printf(
         "--- Experiment 5: Delete Movies with 'numVotes' equal to 1,000---\n");
-        //deleteNumVotes(0);
+    deleteNumVotes(18,root);
+    printbpt(root);
+    printf("\n");
+
+    deleteNumVotes(20,root);
+    printbpt(root);
+    printf("\n");
+
+    deleteNumVotes(16,root);
+    printbpt(root);
     printf("\n");
 
     return 0;
