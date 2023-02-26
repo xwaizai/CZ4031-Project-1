@@ -99,7 +99,7 @@ int main() {
     for (int i = 0; i < noOfRec; i++) {
         root = insertbpt(root, numVotes[i], blockaddr[i]);
     }
-    //printBPTStats(root);
+    printBPTStats(root);
     printf("\n");
 
     // printbpt(root);

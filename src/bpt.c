@@ -3,6 +3,7 @@
 #include "group.h"
 #include "misc.h"
 #include "queue.h"
+#include <time.h>
 
 void populateLeaf(unsigned int* numVotesArr,
                   group** blkAddArr,
@@ -226,11 +227,15 @@ node* searchLeafNodeNoIndex(unsigned int key, node* root, int* noIndex) {
 }
 
 void findNumVotes(unsigned int key, node* root) {
-    int i = 0, noBlocks = 0;
+    clock_t start, end;
+    double cpu_time_used;
+
+    start = clock();
+
+    int i = 0, noBlocks = 0, noNodes = 0;
     double totalRate = 0, count = 0;
-    printf("keys to search: %d\n", key);
-    node* leaf = searchLeafNodeNoIndex(key, root, &noBlocks);
-    printf("Number of index nodes accessed: %d\n", noBlocks);
+    // printf("keys to search: %d\n", key);
+    node* leaf = searchLeafNodeNoIndex(key, root, &noNodes);
 
     while (i < leaf->size) {
         if (key == leaf->keys[i])
@@ -238,20 +243,32 @@ void findNumVotes(unsigned int key, node* root) {
         i++;
     }
 
-    printf("current leaf: %d\n", leaf->keys[i]);
+    end = clock();
+
+    noBlocks = noNodes;
 
     printGroup(leaf->pointers[i], &noBlocks, &totalRate, &count);
 
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+
     //printf("%.2f / %.2f\n", totalRate, count);
+    printf("Number of index nodes accessed: %d\n", noNodes);
     printf("Number of data blocks accessed: %d\n", noBlocks);
     printf("Average of averageRating: %.4f\n", totalRate / count);
+    printf("Time taken: %f seconds\n", cpu_time_used);
 }
 
 void findRangeNumVotes(unsigned int min, unsigned int max, node* root) {
-    int i = 0, noBlocks = 0;
+    clock_t start, end;
+    double cpu_time_used;
+    int i = 0, noBlocks = 0, noNodes=0;
     double totalRate = 0, count = 0;
-    node* leaf = searchLeafNodeNoIndex(min, root, &noBlocks);
-    printf("Number of index nodes accessed: %d\n", noBlocks);
+
+    start = clock();
+
+    node* leaf = searchLeafNodeNoIndex(min, root, &noNodes);
+
+    noBlocks = noNodes;
 
     while (i < leaf->size) {
         if (leaf->keys[i] >= min && leaf->keys[i] <= max) {
@@ -269,9 +286,16 @@ void findRangeNumVotes(unsigned int min, unsigned int max, node* root) {
             break;
         }
     }
+
+    end = clock();
+
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+
     //printf("%.2f / %.2f\n", totalRate, count);
+    printf("Number of index nodes accessed: %d\n", noNodes);
     printf("Number of data blocks accessed: %d\n", noBlocks);
     printf("Average of averageRating: %.4f\n", totalRate / count);
+    printf("Time taken: %f seconds\n", cpu_time_used);
 }
 
 void removeKeyFromNode(node* keyNode, unsigned int key) {
@@ -328,8 +352,6 @@ void takeKeyFromNode(node* targetNode, node* donorNode, unsigned int key) {
 void mergeNodes(node* leftNode, node* rightNode, node** root) {
     int i;
     node* parent = leftNode->parent;
-    printf("Parent Node: %d\n", parent->keys[0]);
-    printbpt(*root);
     // Merge the keys and pointers of the right node into the left node
     for(i=0; i< rightNode->size ; i++) {
         leftNode->keys[leftNode->size] = rightNode->keys[i];
@@ -355,8 +377,6 @@ void mergeNodes(node* leftNode, node* rightNode, node** root) {
     if(i==parent->size)
         i--;
 
-    //printbpt(*root);
-    //printf("Remove Parent Element: %d\n", parent->keys[i]);
     removeKeyFromNode(parent, parent->keys[i]);
 
     free(rightNode);
@@ -401,11 +421,15 @@ void mergeNodes(node* leftNode, node* rightNode, node** root) {
 }
 
 void deleteNumVotes(unsigned int key, node** root) {
+    clock_t start, end;
+    double cpu_time_used;
     int i = 0, noBlocks = 0;
     double totalRate = 0, count = 0;
     node* donorNode;
     node* targetNode;
-    printf("keys to search: %d\n", key);
+
+    start = clock();
+
     node* curNode = searchLeafNodeNoIndex(key, *root, &noBlocks);
 
     // CASE 1: Easy Case - don't need to merge or borrow sibling
@@ -446,6 +470,13 @@ void deleteNumVotes(unsigned int key, node** root) {
             }
         }
     }
+
+    end = clock();
+
+    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+
+    printBPTStats(*root);
+    printf("Time taken: %f seconds\n", cpu_time_used);
 }
 
 void insertToGroup(group* keygroup, char* addr) {
