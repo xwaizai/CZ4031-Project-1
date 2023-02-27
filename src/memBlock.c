@@ -48,7 +48,7 @@ void bruteForceLinearScan(memBlock* current) {
     cpu_time_used += (end.tv_usec - start.tv_usec);
 
     printf("\nBrute Force Method\n");
-    printf("Number of data blocks accessed: %d\n", noBlocks);
-    printf("Time taken: %.0f microseconds\n", cpu_time_used);
+    printf("Number of Data Blocks Accessed: %d\n", noBlocks);
+    printf("Process Runtime: %.0f microseconds\n", cpu_time_used);
     printf("\n\n");
 }

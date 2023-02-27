@@ -48,10 +48,10 @@ int main() {
     printf("\n");
 
     printf("--- Experiment 1: Store data on disk ---\n");
-    printf("Number of records: %lu\n", (BLOCKSIZE / TOBEINSERTEDSIZE) * (blocks - 1) + numRec);
-    printf("Size of records: %d\n",TOBEINSERTEDSIZE);
-    printf("Number of records stored in a block: %d\n", BLOCKSIZE / TOBEINSERTEDSIZE);
-    printf("Number of blocks: %d\n", blocks);
+    printf("Number of Records: %lu\n", (BLOCKSIZE / TOBEINSERTEDSIZE) * (blocks - 1) + numRec);
+    printf("Size of a Record: %d\n",TOBEINSERTEDSIZE);
+    printf("Number of Records Stored in a Block: %d\n", BLOCKSIZE / TOBEINSERTEDSIZE);
+    printf("Number of Blocks for Storing Data: %d\n", blocks);
 
     printf("\n\n");
 

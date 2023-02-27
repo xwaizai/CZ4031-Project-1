@@ -30,8 +30,6 @@ void printRate(char* rate) {
 }
 
 double getRateFromStr(char* record) {
-    // tt116457607.7194
-
     int commacount= 0;
     int index = 0;
     char temp[5];
@@ -60,8 +58,6 @@ void printGroup(group* cur, int* blocksAcc, double* totalRate, double* count) {
     do {
         for (int i = 0; i < cur->size; i++) {
             value = getRateFromStr(cur->pointers[i]);
-            //printRecord(cur->pointers[i]);
-            //printf("%.2f  ", value);
             (*totalRate) += value;
             (*count)++;
         }
@@ -101,10 +97,10 @@ void printBPTStats(node* root) {
         noLevels++;
     }
 
-    printf("Parameter n: %d\n", KEYS);
-    printf("Number of nodes of B+ Tree: %d\n", noNodes);
-    printf("Number of levels: %d\n", noLevels);
-    printf("Content of root node: ");
+    printf("Parameter n of B+ Tree: %d\n", KEYS);
+    printf("Number of Nodes of B+ Tree: %d\n", noNodes);
+    printf("Number of Levels of B+ Tree: %d\n", noLevels);
+    printf("Content of Root Node (Keys): ");
     for (int i = 0; i < root->size; i++) {
         printf("%d ", root->keys[i]);
     }

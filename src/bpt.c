@@ -95,7 +95,6 @@ void splitParent(node* parent1, node* parent2, node* childRight) {
         parent2->keys[findloc] = childRight->keys[0];
         parent2->pointers[findloc + 1] = childRight;
         parent2->size++;
-        // childRight->parent = parent2;
     } else if (childRight->keys[0] < parent2->keys[0] &&
                childRight->keys[0] < parent1->keys[parent1->size - 1]) {
         findloc = findIdxToInsert(parent1, childRight->keys[0]);
@@ -104,7 +103,6 @@ void splitParent(node* parent1, node* parent2, node* childRight) {
         parent1->keys[findloc] = childRight->keys[0];
         parent1->pointers[findloc + 1] = childRight;
         parent1->size++;
-        // childRight->parent = parent1;
     } else {
         findloc = findIdxToInsert(parent1, childRight->keys[0]);
         shiftKeysInNonLeaf(parent1, findloc);
@@ -116,11 +114,6 @@ void splitParent(node* parent1, node* parent2, node* childRight) {
         temp = parent2->pointers[0];
         parent2->pointers[0] = parent1->pointers[parent1->size];
         parent1->pointers[parent1->size] = temp;
-
-        // childRight->parent = parent2;
-
-        // childLeft = parent1->pointers[parent1->size];
-        // childLeft->parent = parent1;
     }
 
     updateChildrenParent(parent1);
@@ -251,11 +244,10 @@ void findNumVotes(unsigned int key, node* root) {
     cpu_time_used = (end.tv_sec - start.tv_sec)* 1000000;
     cpu_time_used += (end.tv_usec - start.tv_usec);
 
-    //printf("%.2f / %.2f\n", totalRate, count);
-    printf("Number of index nodes accessed: %d\n", noNodes);
-    printf("Number of data blocks accessed: %d\n", noBlocks);
-    printf("Average of averageRating: %.4f\n", totalRate / count);
-    printf("Time taken: %.0f microseconds\n", cpu_time_used);
+    printf("Number of Index Nodes Accessed: %d\n", noNodes);
+    printf("Number of Data Blocks Accessed: %d\n", noBlocks);
+    printf("Average of 'averageRating': %.4f\n", totalRate / count);
+    printf("Process Runtime: %.0f microseconds\n", cpu_time_used);
 }
 
 void findRangeNumVotes(unsigned int min, unsigned int max, node* root) {
@@ -293,11 +285,10 @@ void findRangeNumVotes(unsigned int min, unsigned int max, node* root) {
     cpu_time_used = (end.tv_sec - start.tv_sec)* 1000000;
     cpu_time_used += (end.tv_usec - start.tv_usec);
 
-    //printf("%.2f / %.2f\n", totalRate, count);
-    printf("Number of index nodes accessed: %d\n", noNodes);
-    printf("Number of data blocks accessed: %d\n", noBlocks);
-    printf("Average of averageRating: %.4f\n", totalRate / count);
-    printf("Time taken: %.0f microseconds\n", cpu_time_used);
+    printf("Number of Index Nodes Accessed: %d\n", noNodes);
+    printf("Number of Data Blocks Accessed: %d\n", noBlocks);
+    printf("Average of 'averageRating': %.4f\n", totalRate / count);
+    printf("Process Runtime: %.0f microseconds\n", cpu_time_used);
 }
 
 void removeKeyFromNode(node* keyNode, unsigned int key) {
@@ -479,7 +470,7 @@ void deleteNumVotes(unsigned int key, node** root) {
     cpu_time_used += (end.tv_usec - start.tv_usec);
 
     printBPTStats(*root);
-    printf("Time taken: %.0f microseconds\n", cpu_time_used);
+    printf("Process Runtime: %.0f microseconds\n", cpu_time_used);
 }
 
 void insertToGroup(group* keygroup, char* addr) {
@@ -588,7 +579,6 @@ void insertToSplitLeaf(node* left, node* right, unsigned int key, char* addr) {
 }
 
 node* insertbpt(node* root, unsigned int key, char* addr) {
-    // printf("Inserting %d\n", key);
     if (root == NULL) {
         root = (node*)malloc(sizeof(node));
         root->keys[0] = key;
