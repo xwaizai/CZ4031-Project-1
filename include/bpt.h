@@ -20,7 +20,9 @@ typedef struct node {
 
 node* searchLeafNode(unsigned int key, node* root);
 void findNumVotes(unsigned int key, node* root);
+void bruteForceNumVotes(unsigned int key, node* root);
 void findRangeNumVotes(unsigned int min, unsigned int max, node* root);
+void bruteForceRangeNumVotes(unsigned int min, unsigned int max, node* root);
 void deleteNumVotes(unsigned int key, node** root);
 node* insertbpt(node* root, unsigned int key, char* addr);
 

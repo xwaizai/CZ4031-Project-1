@@ -55,11 +55,13 @@ double getRateFromStr(char* record) {
 }
 
 void printGroup(group* cur, int* blocksAcc, double* totalRate, double* count) {
+    double value = 0;
+
     do {
         for (int i = 0; i < cur->size; i++) {
-            double value = getRateFromStr(cur->pointers[i]);
+            value = getRateFromStr(cur->pointers[i]);
             //printRecord(cur->pointers[i]);
-            //printf("%.2f\n ", value);
+            //printf("%.2f  ", value);
             (*totalRate) += value;
             (*count)++;
         }

@@ -1,4 +1,5 @@
 #include <memBlock.h>
+#include <sys/time.h>
 
 memBlock* fillmemBlock(char* input, int length, memBlock* tail) {
     
@@ -26,4 +27,28 @@ memBlock* fillmemBlock(char* input, int length, memBlock* tail) {
     }
     
     return tail;
+}
+
+void bruteForceLinearScan(memBlock* current) {
+    struct timeval start, end;
+    double cpu_time_used;
+    int noBlocks = 0;
+
+    gettimeofday(&start, NULL);
+
+    /*looping through all the memBlocks*/
+    while (current) {
+        noBlocks++;
+        current = current->next;
+    }
+
+    gettimeofday(&end, NULL);
+    
+    cpu_time_used = (end.tv_sec - start.tv_sec)* 1000000;
+    cpu_time_used += (end.tv_usec - start.tv_usec);
+
+    printf("\nBrute Force Method\n");
+    printf("Number of data blocks accessed: %d\n", noBlocks);
+    printf("Time taken: %.0f microseconds\n", cpu_time_used);
+    printf("\n\n");
 }

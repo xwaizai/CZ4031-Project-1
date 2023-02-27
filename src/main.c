@@ -7,7 +7,6 @@
 #include "memBlock.h"
 #include "misc.h"
 #include "readFile.h"
-#include "sorting.h"
 
 int main() {
     printf("\tStart Of Program \t\n");
@@ -54,7 +53,7 @@ int main() {
     printf("Number of records stored in a block: %d\n", BLOCKSIZE / TOBEINSERTEDSIZE);
     printf("Number of blocks: %d\n", blocks);
 
-    printf("\n");
+    printf("\n\n");
 
     /*store number of records*/
     unsigned int noOfRec = BLOCKSIZE / TOBEINSERTEDSIZE * (blocks - 1) + numRec;
@@ -100,26 +99,24 @@ int main() {
         root = insertbpt(root, numVotes[i], blockaddr[i]);
     }
     printBPTStats(root);
-    printf("\n");
+    printf("\n\n");
 
     // printbpt(root);
     saveToFile(root, "Base_Tree.txt");
 
     printf("--- Experiment 3: Movies with 'numVotes' equal to 500 ---\n");
-    //findNumVotes(500, root);
-    findNumVotes(16, root);
-    printf("\n");
+    findNumVotes(500, root);
+    //bruteForceNumVotes(500, root);
+    bruteForceLinearScan(head);
 
-    printf(
-        "--- Experiment 4: Movies with 'numVotes' from 30,000 to 40,000---\n");
-    //findRangeNumVotes(30000, 40000, root);
-    findRangeNumVotes(16, 40, root);
-    printf("\n");
+    printf("--- Experiment 4: Movies with 'numVotes' from 30,000 to 40,000 ---\n");
+    findRangeNumVotes(30000, 40000, root);
+    //bruteForceRangeNumVotes(30000, 40000, root);
+    bruteForceLinearScan(head);
 
-    printf(
-        "--- Experiment 5: Delete Movies with 'numVotes' equal to 1,000---\n");
+    printf("--- Experiment 5: Delete Movies with 'numVotes' equal to 1,000 ---\n");
     deleteNumVotes(1000,&root);
-    printf("\n");
+    bruteForceLinearScan(head);
     
     saveToFile(root, "Delete_Tree.txt");
 

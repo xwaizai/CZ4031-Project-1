@@ -3,7 +3,7 @@
 #include "group.h"
 #include "misc.h"
 #include "queue.h"
-#include <time.h>
+#include <sys/time.h>
 
 void populateLeaf(unsigned int* numVotesArr,
                   group** blkAddArr,
@@ -227,14 +227,13 @@ node* searchLeafNodeNoIndex(unsigned int key, node* root, int* noIndex) {
 }
 
 void findNumVotes(unsigned int key, node* root) {
-    clock_t start, end;
+    struct timeval start, end;
     double cpu_time_used;
 
-    start = clock();
+    gettimeofday(&start, NULL);
 
     int i = 0, noBlocks = 0, noNodes = 0;
     double totalRate = 0, count = 0;
-    // printf("keys to search: %d\n", key);
     node* leaf = searchLeafNodeNoIndex(key, root, &noNodes);
 
     while (i < leaf->size) {
@@ -243,28 +242,29 @@ void findNumVotes(unsigned int key, node* root) {
         i++;
     }
 
-    end = clock();
-
     noBlocks = noNodes;
 
     printGroup(leaf->pointers[i], &noBlocks, &totalRate, &count);
 
-    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    gettimeofday(&end, NULL);
+    
+    cpu_time_used = (end.tv_sec - start.tv_sec)* 1000000;
+    cpu_time_used += (end.tv_usec - start.tv_usec);
 
     //printf("%.2f / %.2f\n", totalRate, count);
     printf("Number of index nodes accessed: %d\n", noNodes);
     printf("Number of data blocks accessed: %d\n", noBlocks);
     printf("Average of averageRating: %.4f\n", totalRate / count);
-    printf("Time taken: %f seconds\n", cpu_time_used);
+    printf("Time taken: %.0f microseconds\n", cpu_time_used);
 }
 
 void findRangeNumVotes(unsigned int min, unsigned int max, node* root) {
-    clock_t start, end;
+    struct timeval start, end;
     double cpu_time_used;
     int i = 0, noBlocks = 0, noNodes=0;
     double totalRate = 0, count = 0;
 
-    start = clock();
+    gettimeofday(&start, NULL);
 
     node* leaf = searchLeafNodeNoIndex(min, root, &noNodes);
 
@@ -280,6 +280,7 @@ void findRangeNumVotes(unsigned int min, unsigned int max, node* root) {
                 break;
             }
             leaf = (node*)leaf->pointers[KEYS];
+            noBlocks++;
             i = 0;
         }
         if (leaf->keys[i] > max) {
@@ -287,15 +288,16 @@ void findRangeNumVotes(unsigned int min, unsigned int max, node* root) {
         }
     }
 
-    end = clock();
+    gettimeofday(&end, NULL);
 
-    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    cpu_time_used = (end.tv_sec - start.tv_sec)* 1000000;
+    cpu_time_used += (end.tv_usec - start.tv_usec);
 
     //printf("%.2f / %.2f\n", totalRate, count);
     printf("Number of index nodes accessed: %d\n", noNodes);
     printf("Number of data blocks accessed: %d\n", noBlocks);
     printf("Average of averageRating: %.4f\n", totalRate / count);
-    printf("Time taken: %f seconds\n", cpu_time_used);
+    printf("Time taken: %.0f microseconds\n", cpu_time_used);
 }
 
 void removeKeyFromNode(node* keyNode, unsigned int key) {
@@ -421,16 +423,16 @@ void mergeNodes(node* leftNode, node* rightNode, node** root) {
 }
 
 void deleteNumVotes(unsigned int key, node** root) {
-    clock_t start, end;
+    struct timeval start, end;
     double cpu_time_used;
-    int i = 0, noBlocks = 0;
+    int i = 0;
     double totalRate = 0, count = 0;
     node* donorNode;
     node* targetNode;
 
-    start = clock();
+    gettimeofday(&start, NULL);
 
-    node* curNode = searchLeafNodeNoIndex(key, *root, &noBlocks);
+    node* curNode = searchLeafNode(key, *root);
 
     // CASE 1: Easy Case - don't need to merge or borrow sibling
     if(curNode->size-1 >= (KEYS+1)/2){
@@ -471,12 +473,13 @@ void deleteNumVotes(unsigned int key, node** root) {
         }
     }
 
-    end = clock();
-
-    cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+    gettimeofday(&end, NULL);
+    
+    cpu_time_used = (end.tv_sec - start.tv_sec)* 1000000;
+    cpu_time_used += (end.tv_usec - start.tv_usec);
 
     printBPTStats(*root);
-    printf("Time taken: %f seconds\n", cpu_time_used);
+    printf("Time taken: %.0f microseconds\n", cpu_time_used);
 }
 
 void insertToGroup(group* keygroup, char* addr) {

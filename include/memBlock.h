@@ -18,5 +18,6 @@ typedef struct memBlock {
 } memBlock;
 
 memBlock* fillmemBlock(char* input, int length, memBlock* current);
+void bruteForceLinearScan(memBlock* current);
 
 #endif
